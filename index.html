@@ -1,0 +1,1754 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f3f5f7">
+  <meta name="color-scheme" content="light">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; form-action 'none'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>FreeDOS · Material de clase</title>
+  <meta name="description" content="Recorrido técnico por FreeDOS: historia, sistemas de archivos, arranque, kernel, arquitectura x86 y prácticas en DOSBox-X.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <div class="app">
+    <header class="topbar">
+      <button class="icon-btn" id="menuBtn" type="button" aria-label="Abrir índice" aria-expanded="false" aria-controls="sidebar" title="Índice (O)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <div class="brand">
+        <strong>FreeDOS</strong>
+        <span>Material de clase</span>
+      </div>
+      <div class="topbar-section" id="currentSection">Inicio</div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="overviewBtn" type="button" aria-label="Abrir índice general" title="Índice general (O)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>
+          <span class="btn-label">Índice</span>
+        </button>
+        <button class="icon-btn" id="notesBtn" type="button" aria-label="Mostrar notas" aria-pressed="false" title="Notas (N)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h9l4 4v12H6z"/><path d="M15 4v4h4M9 12h6M9 16h6"/></svg>
+          <span class="btn-label">Notas</span>
+        </button>
+        <button class="icon-btn" id="fullscreenBtn" type="button" aria-label="Alternar pantalla completa" title="Pantalla completa (F)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M21 16v5h-5M3 16v5h5"/></svg>
+          <span class="btn-label">Pantalla</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="progress" aria-hidden="true"><div id="progressBar"></div></div>
+
+    <aside class="sidebar" id="sidebar" aria-label="Índice de la clase" aria-hidden="true" inert>
+      <div class="sidebar-head">
+        <div>
+          <strong>Índice</strong>
+          <span>31 diapositivas</span>
+        </div>
+        <button class="icon-btn" id="sidebarClose" type="button" aria-label="Cerrar índice">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <nav class="sidebar-nav" id="sidebarNav"></nav>
+      <div class="sidebar-foot">
+        <span><kbd>←</kbd><kbd>→</kbd> navegar</span>
+        <span><kbd>N</kbd> notas</span>
+        <span><kbd>F</kbd> pantalla</span>
+      </div>
+    </aside>
+    <div class="backdrop" id="backdrop" hidden></div>
+
+    <main class="deck" id="main" tabindex="-1">
+      <section class="slide slide-cover is-active" id="portada" data-title="Portada" data-section="Inicio" aria-hidden="false">
+        <div class="slide-inner cover">
+          <div class="cover-copy">
+            <p class="kicker">Tecnicatura · Sistemas operativos</p>
+            <h1>FreeDOS</h1>
+            <p class="lead">Arquitectura x86, almacenamiento, arranque, interrupciones y prácticas en DOSBox-X.</p>
+            <div class="specs" aria-label="Características principales">
+              <span>8086 / 8088</span>
+              <span>16 bits</span>
+              <span>1 MB</span>
+              <span>FAT</span>
+              <span>INT 21h</span>
+            </div>
+            <a class="btn primary cover-download" href="Apuntes_docente_FreeDOS.pdf" download>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v11M8 10l4 4 4-4M5 18v3h14v-3"/></svg>
+              Descargar resumen (PDF)
+            </a>
+            <p class="cover-meta">2026</p>
+          </div>
+          <div class="cover-visual" aria-hidden="true">
+            <svg viewBox="0 0 440 320" fill="none" role="presentation">
+              <rect x="18" y="28" width="242" height="176" rx="14" stroke="currentColor" stroke-width="3"/>
+              <rect x="38" y="48" width="202" height="126" rx="7" fill="var(--accent-soft)" stroke="currentColor" stroke-width="2"/>
+              <path d="M60 78h58M60 96h92M60 114h74M60 132h104" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <path d="M110 204v14M90 218h80v18H90z" stroke="currentColor" stroke-width="3"/>
+              <rect x="46" y="236" width="188" height="48" rx="7" stroke="currentColor" stroke-width="3"/>
+              <path d="M68 252h22M100 252h22M132 252h22M164 252h22M196 252h18M68 268h22M100 268h22M132 268h22M164 268h22M196 268h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <rect x="300" y="58" width="116" height="132" rx="12" fill="var(--surface-2)" stroke="currentColor" stroke-width="3"/>
+              <path d="M318 84h80M318 108h80M318 132h80M318 156h80" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <text x="358" y="78" text-anchor="middle" fill="currentColor" font-size="11" font-family="ui-monospace, monospace">CPU</text>
+              <text x="358" y="102" text-anchor="middle" fill="currentColor" font-size="11" font-family="ui-monospace, monospace">16 bits</text>
+              <text x="358" y="126" text-anchor="middle" fill="currentColor" font-size="11" font-family="ui-monospace, monospace">1 MB</text>
+              <text x="358" y="150" text-anchor="middle" fill="currentColor" font-size="11" font-family="ui-monospace, monospace">INT 21h</text>
+              <path d="M260 118h36" stroke="var(--accent)" stroke-width="3" stroke-dasharray="6 6"/>
+              <text x="278" y="108" text-anchor="middle" fill="var(--accent-strong)" font-size="10" font-family="ui-monospace, monospace">bus</text>
+              <path d="M300 224h116M320 224v-10M396 224v-10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <text x="358" y="248" text-anchor="middle" fill="currentColor" font-size="10" font-family="ui-monospace, monospace">segmento : offset</text>
+            </svg>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Presentar el alcance: un recorrido técnico, no una introducción motivacional. La clase termina con cuatro prácticas sobre DOSBox-X.</p>
+          <p>Aclarar desde el inicio que FreeDOS se estudia como sistema de 16 bits en modo real; varias limitaciones actuales se explican por esa base.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="recorrido" data-title="Recorrido de la clase" data-section="Inicio" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Inicio</p>
+              <h1>Recorrido de la clase</h1>
+            </div>
+            <span class="slide-tag">Agenda</span>
+          </header>
+          <div class="agenda">
+            <button class="agenda-item" type="button" data-goto="historia">
+              <span class="agenda-num">01</span>
+              <strong>Historia y propósito</strong>
+              <small>DOS, MS-DOS y el origen de FreeDOS</small>
+            </button>
+            <button class="agenda-item" type="button" data-goto="filesystem">
+              <span class="agenda-num">02</span>
+              <strong>Disco y archivos</strong>
+              <small>FAT, NTFS y EXT</small>
+            </button>
+            <button class="agenda-item" type="button" data-goto="arranque">
+              <span class="agenda-num">03</span>
+              <strong>Arranque y firmware</strong>
+              <small>BIOS/UEFI, kernel y shell</small>
+            </button>
+            <button class="agenda-item" type="button" data-goto="kernel">
+              <span class="agenda-num">04</span>
+              <strong>Kernel y ejecución</strong>
+              <small>Componentes y modelo de procesos</small>
+            </button>
+            <button class="agenda-item" type="button" data-goto="modo-real">
+              <span class="agenda-num">05</span>
+              <strong>Arquitectura x86</strong>
+              <small>Memoria, segmentos, registros e interrupciones</small>
+            </button>
+            <button class="agenda-item" type="button" data-goto="vigencia">
+              <span class="agenda-num">06</span>
+              <strong>Vigencia</strong>
+              <small>Casos de uso, límites y conclusiones</small>
+            </button>
+            <button class="agenda-item" type="button" data-goto="virtualizacion">
+              <span class="agenda-num">07</span>
+              <strong>Virtualización y emulación</strong>
+              <small>Diferencias y cuándo usar cada una</small>
+            </button>
+            <button class="agenda-item" type="button" data-goto="practica-dosbox">
+              <span class="agenda-num">08</span>
+              <strong>Prácticas</strong>
+              <small>DOSBox-X, DEBUG, NASM y OpenGEM</small>
+            </button>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>El orden sigue una progresión: contexto, almacenamiento, arranque, componentes, arquitectura y prácticas. Las prácticas quedan al final para no interrumpir los conceptos.</p>
+          <p>El material original salta del tema 5 al 7; acá se renumera el recorrido y se conserva el contenido técnico.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="historia" data-title="De DOS a FreeDOS" data-section="Historia" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Historia</p>
+              <h1>De DOS a FreeDOS</h1>
+            </div>
+            <span class="slide-tag">Contexto</span>
+          </header>
+          <div class="grid two">
+            <div class="card">
+              <h3>Línea de tiempo</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <time>1970–1980</time>
+                  <h3>Familia DOS</h3>
+                  <p>Sistemas para Intel 8086/8088 en computadoras personales, con interfaz textual y órdenes escritas.</p>
+                </div>
+                <div class="timeline-item">
+                  <time>1981</time>
+                  <h3>MS-DOS e IBM PC</h3>
+                  <p>MS-DOS se asocia al IBM PC y se convierte en referencia de la industria. También existían PC-DOS y DR-DOS.</p>
+                </div>
+                <div class="timeline-item">
+                  <time>1990s</time>
+                  <h3>Cambio de escenario</h3>
+                  <p>La expansión de Windows modifica el papel de DOS. La GUI deja de depender del arranque manual con <code>win</code>.</p>
+                </div>
+                <div class="timeline-item">
+                  <time>1994</time>
+                  <h3>Propuesta de FreeDOS</h3>
+                  <p>Jim Hall propone un sistema compatible con MS-DOS, libre y mantenido por la comunidad.</p>
+                </div>
+                <div class="timeline-item">
+                  <time>1995</time>
+                  <h3>Windows 95</h3>
+                  <p>Punto de inflexión comercial: GUI integrada y multitarea para aplicaciones Win32. DOS sigue presente en el arranque.</p>
+                </div>
+                <div class="timeline-item">
+                  <time>2000–2026</time>
+                  <h3>Continuidad</h3>
+                  <p>FreeDOS se mantiene como entorno DOS libre para compatibilidad, industria, retrocomputación y enseñanza.</p>
+                </div>
+              </div>
+            </div>
+            <div class="stack">
+              <div class="card">
+                <h3>DOS no es un solo sistema</h3>
+                <p>MS-DOS, PC-DOS y DR-DOS compitieron en el mismo ecosistema. MS-DOS se impuso como estándar de facto en las PC compatibles.</p>
+              </div>
+              <div class="callout">
+                <p><strong>FreeDOS</strong> nace para conservar compatibilidad con MS-DOS sin depender de una empresa privada.</p>
+              </div>
+              <div class="card">
+                <h3>Qué se conserva</h3>
+                <ul>
+                  <li>Interfaz de línea de comandos.</li>
+                  <li>Modelo de 16 bits en modo real.</li>
+                  <li>Compatibilidad binaria con software DOS.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Enfatizar que DOS designa una familia, no un único producto. MS-DOS fue el estándar de facto, pero no el único.</p>
+          <p>Matiz importante: Windows 95 fue un sistema híbrido 16/32 bits y siguió arrancando sobre DOS (IO.SYS/COMMAND.COM). Lo que cambió fue la integración de la GUI, no la desaparición de DOS.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="que-es-dos" data-title="¿Qué es DOS?" data-section="Historia" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Historia</p>
+              <h1>¿Qué es DOS?</h1>
+            </div>
+            <span class="slide-tag">Definición</span>
+          </header>
+          <p class="lead"><strong>Disk Operating System</strong>: familia de sistemas operativos diseñada para procesadores Intel 8086/8088 y computadoras personales de las décadas de 1970 y 1980.</p>
+          <div class="grid two">
+            <div class="card">
+              <h3>Modo texto y CLI</h3>
+              <p>En modo nativo no hay interfaz gráfica. La interacción se realiza mediante una <em>Command Line Interface</em>: terminal o consola de comandos.</p>
+            </div>
+            <div class="card">
+              <h3>Monotarea y monousuario</h3>
+              <p>Un solo programa utiliza el procesador en primer plano. No hay hilos, planificador de procesos ni usuarios y permisos diferenciados.</p>
+            </div>
+            <div class="card">
+              <h3>Acceso directo al hardware</h3>
+              <p>El programa puede acceder directamente a memoria, video y periféricos. No existe la mediación y el aislamiento de un sistema moderno.</p>
+            </div>
+            <div class="card">
+              <h3>16 bits y 1 MB</h3>
+              <p>Registros de 16 bits y 640 KB de memoria convencional + 384 KB superiores. El bus de direcciones es de 20 bits.</p>
+            </div>
+          </div>
+          <div class="callout warn">
+            <p><strong>Consecuencia:</strong> no hay protección de memoria ni niveles de privilegio. Todo el software corre al mismo nivel.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Definir DOS con precisión: no es “un sistema operativo viejo” sino una familia con un modelo de ejecución común.</p>
+          <p>La suma 640 KB + 384 KB = 1 MB. Los 384 KB superiores no son RAM libre continua: incluyen video, BIOS y ROM de adaptadores.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="msdos-windows" data-title="MS-DOS y Windows 95" data-section="Historia" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Historia</p>
+              <h1>MS-DOS y el cambio de escenario</h1>
+            </div>
+            <span class="slide-tag">1981–1995</span>
+          </header>
+          <div class="grid two">
+            <div class="card">
+              <h3>MS-DOS · 1981–principios de los 90</h3>
+              <ul>
+                <li>Nace asociado al IBM PC.</li>
+                <li>Se impone como estándar de la industria.</li>
+                <li>Competidores: PC-DOS y DR-DOS.</li>
+                <li>La GUI se lanzaba manualmente con el comando <code>win</code>.</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Windows 95 · punto de inflexión</h3>
+              <ul>
+                <li>Interfaz gráfica integrada.</li>
+                <li>Multitarea preemptiva para aplicaciones Win32.</li>
+                <li>Evolución hacia un modelo de 32 bits.</li>
+                <li>DOS sigue en el arranque, pero deja de ser el lanzador manual de la GUI.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout warn">
+            <p><strong>Matiz técnico:</strong> Windows 95 no fue un sistema de 32 bits puro ni eliminó DOS del arranque. Fue un sistema híbrido que conservó IO.SYS y COMMAND.COM.</p>
+          </div>
+          <div class="card compact">
+            <p>Para la clase, la consecuencia es concreta: MS-DOS pierde centralidad comercial, pero su ecosistema de software y sus formatos siguen existiendo. FreeDOS aparece para dar continuidad a ese ecosistema.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Evitar la simplificación “Windows 95 mató a DOS”. La transición fue gradual y mantuvo componentes de DOS durante años.</p>
+          <p>Este matiz explica por qué FreeDOS todavía tiene sentido: la base instalada de software DOS no desapareció con Windows 95.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="freedos-origen" data-title="FreeDOS: origen y propósito" data-section="Historia" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Historia</p>
+              <h1>FreeDOS: origen y propósito</h1>
+            </div>
+            <span class="slide-tag">1994</span>
+          </header>
+          <div class="split-stat">
+            <div class="stat">
+              <strong>1994</strong>
+              <span>Jim Hall propone un DOS compatible, libre y de código abierto.</span>
+            </div>
+            <div class="stack">
+              <div class="card">
+                <h3>Qué buscaba</h3>
+                <ul>
+                  <li>Compatibilidad con MS-DOS.</li>
+                  <li>Una comunidad que mantenga el proyecto.</li>
+                  <li>Continuidad para software y hardware heredado.</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h3>Licencia</h3>
+                <p>Software libre bajo <strong>GNU GPL</strong>. No es dominio público: permite usar, estudiar, modificar y redistribuir bajo las condiciones de la licencia, incluso con fines comerciales.</p>
+              </div>
+            </div>
+          </div>
+          <div class="callout">
+            <p><strong>Propósito:</strong> preservar un entorno DOS utilizable para compatibilidad, sistemas heredados, retrocomputación y enseñanza, sin depender de una empresa privada.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Corrección respecto del original: FreeDOS no es “dominio público”; es software libre bajo GPL. La diferencia importa para explicar obligaciones de distribución.</p>
+          <p>La comunidad y la compatibilidad binaria son el criterio central del proyecto, por encima de agregar funcionalidades modernas.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="usos" data-title="¿Para qué se usa hoy?" data-section="Historia" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Historia</p>
+              <h1>¿Para qué se usa hoy?</h1>
+            </div>
+            <span class="slide-tag">Nichos</span>
+          </header>
+          <div class="grid two">
+            <div class="card use-card">
+              <span class="use-num">01</span>
+              <div>
+                <h3>Retrocomputación y gaming</h3>
+                <p>Arcades, hardware de época y juegos clásicos que dependen de un entorno DOS real o emulado.</p>
+              </div>
+            </div>
+            <div class="card use-card">
+              <span class="use-num">02</span>
+              <div>
+                <h3>Entornos industriales</h3>
+                <p>PLC antiguos, control numérico, instrumental de laboratorio y sistemas de punto de venta.</p>
+              </div>
+            </div>
+            <div class="card use-card">
+              <span class="use-num">03</span>
+              <div>
+                <h3>Sistemas embebidos</h3>
+                <p>Escenarios que necesitan un entorno determinístico, con bajo consumo y sin la sobrecarga de un planificador moderno.</p>
+              </div>
+            </div>
+            <div class="card use-card">
+              <span class="use-num">04</span>
+              <div>
+                <h3>Hardware sin sistema operativo</h3>
+                <p>Fabricantes como Lenovo o HP distribuyen utilidades de actualización sobre DOS para acceso directo al hardware.</p>
+              </div>
+            </div>
+            <div class="card use-card wide">
+              <span class="use-num">05</span>
+              <div>
+                <h3>Educación e investigación</h3>
+                <p>Permite observar el movimiento de datos dentro de un circuito informático, el arranque, la memoria y las interrupciones sin la complejidad de un sistema moderno.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>No presentar FreeDOS como una curiosidad nostálgica. Cada uso responde a una restricción técnica concreta: acceso directo, determinismo, compatibilidad o costo.</p>
+          <p>El uso educativo es el que interesa acá: el sistema es lo bastante pequeño como para seguir el recorrido completo de una instrucción.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="filesystem" data-title="Disco, archivos y sistemas de archivos" data-section="Archivos" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Archivos</p>
+              <h1>Disco, archivos y sistemas de archivos</h1>
+            </div>
+            <span class="slide-tag">Conceptos</span>
+          </header>
+          <p class="lead">El disco es almacenamiento bruto. El sistema de archivos aporta el índice y las reglas necesarias para interpretarlo.</p>
+          <div class="flow-horizontal" aria-label="Relación entre disco, índice y reglas">
+            <div class="flow-box"><strong>Bloques de disco</strong><span>Bytes sin estructura</span></div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div class="flow-box accent"><strong>Índice</strong><span>Ubica cada archivo</span></div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div class="flow-box"><strong>Reglas</strong><span>Nombre, ubicación, seguridad</span></div>
+          </div>
+          <div class="grid three">
+            <div class="card">
+              <h3>Sin filesystem</h3>
+              <p>El sistema no sabe dónde empieza ni dónde termina un archivo. Solo ve sectores y bytes.</p>
+            </div>
+            <div class="card">
+              <h3>Para el procesador</h3>
+              <p>Un archivo es solamente una secuencia de bytes. La estructura la aporta el sistema de archivos.</p>
+            </div>
+            <div class="card">
+              <h3>Tres elementos</h3>
+              <ul>
+                <li><strong>Nombre</strong> de archivo o directorio.</li>
+                <li><strong>Ubicación</strong>: segmento o clúster.</li>
+                <li><strong>Seguridad</strong>: permisos y estado.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout">
+            <p><strong>Idea central:</strong> un file system es un índice más un conjunto de reglas de organización. Sin esas reglas, el hardware no puede reconstruir un archivo.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Separar almacenamiento físico de organización lógica. El disco no “sabe” qué es un archivo; el sistema de archivos construye esa interpretación.</p>
+          <p>Adelantar que FAT usa una tabla como índice y que NTFS/EXT agregan journaling y permisos.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="fat" data-title="FAT: la tabla como índice" data-section="Archivos" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Archivos</p>
+              <h1>FAT: la tabla como índice</h1>
+            </div>
+            <span class="slide-tag">File Allocation Table</span>
+          </header>
+          <p class="lead">Un archivo no siempre ocupa bloques consecutivos. El directorio indica dónde comenzar y FAT señala qué bloque sigue.</p>
+          <figure class="fat-explanation" aria-labelledby="fat-caption">
+            <div class="fat-idea">
+              <p><strong>La idea:</strong> <code>ARCHIVO.DAT</code> está guardado en cuatro bloques separados. FAT indica el orden para leerlos como un único archivo.</p>
+            </div>
+            <div class="fat-map">
+              <section class="fat-directory" aria-labelledby="fat-directory-title">
+                <p class="fat-label" id="fat-directory-title">1. Directorio</p>
+                <p>El directorio guarda el nombre del archivo y dónde empieza.</p>
+                <p class="fat-start"><code>ARCHIVO.DAT</code><span>empieza en el clúster <strong>2</strong></span></p>
+              </section>
+              <section class="fat-table" aria-labelledby="fat-table-title">
+                <p class="fat-label" id="fat-table-title">2. Tabla FAT</p>
+                <p>FAT responde: “si estás aquí, seguí por este clúster”.</p>
+                <dl>
+                  <div><dt>2</dt><dd>seguir por <strong>5</strong></dd></div>
+                  <div><dt>5</dt><dd>seguir por <strong>9</strong></dd></div>
+                  <div><dt>9</dt><dd>seguir por <strong>12</strong></dd></div>
+                  <div><dt>12</dt><dd><strong>fin del archivo</strong></dd></div>
+                </dl>
+              </section>
+            </div>
+            <section class="fat-disk" aria-labelledby="fat-disk-title">
+              <p class="fat-label" id="fat-disk-title">3. Disco</p>
+              <p>Las partes del archivo están mezcladas con otros datos:</p>
+              <div class="fat-disk-grid" aria-label="Bloques del disco; las partes A, B, C y D forman ARCHIVO.DAT">
+                <span>1</span><span class="is-file"><small>2</small>A</span><span>3</span><span>4</span>
+                <span class="is-file"><small>5</small>B</span><span>6</span><span>7</span><span>8</span>
+                <span class="is-file"><small>9</small>C</span><span>10</span><span>11</span><span class="is-file"><small>12</small>D</span>
+              </div>
+              <p class="fat-result">FAT permite reconstruir <code>ARCHIVO.DAT</code> como <strong>A → B → C → D</strong>, aunque sus partes no estén juntas.</p>
+            </section>
+            <figcaption id="fat-caption">FAT no guarda el archivo: guarda las indicaciones para encontrar cada parte.</figcaption>
+          </figure>
+          <div class="grid two">
+            <div class="table-wrap">
+              <table>
+                <caption class="sr-only">Comparación de variantes FAT</caption>
+                <thead>
+                  <tr><th>Variante</th><th>Direcciones</th><th>Archivo máx.</th><th>Uso típico</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>FAT16</td><td>16 bits</td><td>2 GB</td><td>Volúmenes pequeños y arranque heredado</td></tr>
+                  <tr><td>FAT32</td><td>28 bits efectivos</td><td>4 GB</td><td>USB, tarjetas SD, discos portátiles</td></tr>
+                  <tr><td>ExFAT</td><td>64 bits</td><td>Muy grande</td><td>Extraíbles de gran capacidad</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="stack">
+              <div class="card">
+                <h3>Cómo se lee</h3>
+                <p>La entrada de directorio guarda el nombre, el primer clúster y los atributos. La tabla FAT encadena los clústeres restantes mediante punteros.</p>
+              </div>
+              <div class="callout warn">
+                <p><strong>Precisión:</strong> FAT16/FAT32 no usan “sectores de 16/32 bits”. Lo que cambia es el tamaño de las direcciones de clúster: 16 bits en FAT16 y 28 bits efectivos en FAT32.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Mostrar primero las cuatro partes separadas en el disco. Recién después vincular el directorio con el inicio en 2 y la tabla FAT con los saltos 2 → 5 → 9 → 12 → EOF.</p>
+          <p>FAT32 tiene un máximo de 4 GB por archivo y volúmenes de hasta 2 TB en implementaciones habituales; no un máximo de 16 GB. Se usa en unidades de más de 16 GB sin problema.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="ntfs-ext" data-title="NTFS y EXT" data-section="Archivos" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Archivos</p>
+              <h1>NTFS y EXT: sistemas con journaling</h1>
+            </div>
+            <span class="slide-tag">Sistemas modernos</span>
+          </header>
+          <div class="grid two">
+            <div class="card">
+              <h3>NTFS</h3>
+              <ul>
+                <li>Desarrollado por Microsoft a mediados de los 90.</li>
+                <li>Journaling: registra cambios antes de aplicarlos.</li>
+                <li>ACL/ACE: sujeto, permiso y tipo (permite/niega).</li>
+                <li>EFS: cifrado de archivos y directorios.</li>
+                <li>Compresión y soporte para volúmenes y archivos grandes.</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>EXT</h3>
+              <ul>
+                <li>Estándar de Linux y Unix.</li>
+                <li>EXT1/EXT2: rápido y robusto, sin journaling.</li>
+                <li>EXT3: incorpora journaling.</li>
+                <li>EXT4: estándar actual; volúmenes de hasta 1 EiB y archivos de hasta 16 TiB.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <caption class="sr-only">Comparación entre FAT32, NTFS y EXT4</caption>
+              <thead>
+                <tr><th>Característica</th><th>FAT32</th><th>NTFS</th><th>EXT4</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Journaling</td><td>No</td><td>Sí</td><td>Sí</td></tr>
+                <tr><td>Permisos</td><td>No</td><td>ACL</td><td>Permisos POSIX</td></tr>
+                <tr><td>Cifrado</td><td>No</td><td>EFS</td><td>fscrypt (opcional)</td></tr>
+                <tr><td>Archivo máximo</td><td>4 GB</td><td>16 TB práctico</td><td>16 TiB</td></tr>
+                <tr><td>Uso principal</td><td>Extraíbles</td><td>Windows</td><td>Linux</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout">
+            <p><strong>Journaling:</strong> el sistema anota el cambio en un registro antes de ejecutarlo. Si hay un corte, puede recuperar un estado consistente. <strong>EFS</strong> es cifrado; la compresión es una función separada de NTFS.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Corrección respecto del original: EFS no es compresión, es cifrado. NTFS también ofrece compresión, pero es otra función.</p>
+          <p>Evitar dar cifras absolutas sin contexto: los máximos dependen de la implementación y del tamaño de clúster. Para la clase alcanza con distinguir FAT (simple, sin journaling) de NTFS/EXT (journaling y permisos).</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="arranque" data-title="Secuencia de arranque" data-section="Arranque" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Arranque</p>
+              <h1>Secuencia de arranque</h1>
+            </div>
+            <span class="slide-tag">6 etapas</span>
+          </header>
+          <p class="lead">Desde el firmware hasta el prompt <code>C:\&gt;</code>. La IVT es el hilo común: se crea en la BIOS y se actualiza en cada etapa.</p>
+          <div class="boot-widget">
+            <div class="flow" id="bootFlow" role="group" aria-label="Etapas del arranque">
+              <button class="flow-step" type="button" data-step="0" aria-pressed="true">
+                <span class="flow-num">1</span>
+                <span><strong>BIOS / UEFI</strong><small>POST + IVT inicial</small></span>
+              </button>
+              <button class="flow-step" type="button" data-step="1" aria-pressed="false">
+                <span class="flow-num">2</span>
+                <span><strong>MBR / VBR</strong><small>Sector de arranque</small></span>
+              </button>
+              <button class="flow-step" type="button" data-step="2" aria-pressed="false">
+                <span class="flow-num">3</span>
+                <span><strong>KERNEL.SYS</strong><small>El kernel toma el control</small></span>
+              </button>
+              <button class="flow-step" type="button" data-step="3" aria-pressed="false">
+                <span class="flow-num">4</span>
+                <span><strong>CONFIG.SYS</strong><small>Memoria y drivers</small></span>
+              </button>
+              <button class="flow-step" type="button" data-step="4" aria-pressed="false">
+                <span class="flow-num">5</span>
+                <span><strong>COMMAND.COM</strong><small>Shell + AUTOEXEC.BAT</small></span>
+              </button>
+              <button class="flow-step" type="button" data-step="5" aria-pressed="false">
+                <span class="flow-num">6</span>
+                <span><strong>C:\&gt;</strong><small>Sistema listo</small></span>
+              </button>
+            </div>
+            <div class="boot-side">
+              <div class="detail-panel" id="bootDetail" aria-live="polite">
+                <span class="detail-tag">Firmware</span>
+                <h3>BIOS / UEFI</h3>
+                <p>El procesador ejecuta el firmware de la placa. El POST verifica RAM, CPU y dispositivos. La BIOS escribe la IVT en <code>00000h–003FFh</code> con servicios básicos de pantalla, teclado y disco.</p>
+              </div>
+              <button class="btn" id="bootPlay" type="button">Recorrer automáticamente</button>
+            </div>
+          </div>
+          <div class="callout warn">
+            <p><strong>Precisión:</strong> en modo real no existe “espacio protegido”. Los drivers y TSR se cargan en memoria reservada, pero sin protección de memoria.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Usar este mapa como columna vertebral de la clase. Cada etapa se puede explicar con la IVT como referencia.</p>
+          <p>La BIOS llena la IVT con servicios básicos; el kernel la reemplaza y amplía; los drivers y TSR agregan entradas. Al final, el prompt es la interfaz de la shell.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="arranque-1" data-title="Arranque: firmware, sector y kernel" data-section="Arranque" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Arranque</p>
+              <h1>Firmware, sector y kernel</h1>
+            </div>
+            <span class="slide-tag">Etapas 1–3</span>
+          </header>
+          <div class="grid three">
+            <div class="card step-card">
+              <span class="step-num">1</span>
+              <h3>BIOS / UEFI</h3>
+              <ul>
+                <li>POST: verificación de RAM, CPU y dispositivos.</li>
+                <li>IVT en los primeros 1 KB de RAM: <code>00000h–003FFh</code>.</li>
+                <li>Servicios básicos de pantalla, teclado y disco.</li>
+              </ul>
+            </div>
+            <div class="card step-card">
+              <span class="step-num">2</span>
+              <h3>MBR / VBR</h3>
+              <ul>
+                <li>La BIOS lee el sector de arranque con <code>INT 13h</code>.</li>
+                <li>El MBR o VBR contiene el código que busca el sistema.</li>
+                <li>FreeDOS usa su propio sector de arranque; también puede intervenir un gestor como GRUB.</li>
+              </ul>
+            </div>
+            <div class="card step-card">
+              <span class="step-num">3</span>
+              <h3>KERNEL.SYS</h3>
+              <ul>
+                <li>El kernel se copia a RAM y toma el control.</li>
+                <li>Reemplaza funciones de la BIOS por rutinas propias.</li>
+                <li>Actualiza la IVT con los servicios del sistema operativo.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout">
+            <p><strong>IVT:</strong> tabla de 256 entradas de 4 bytes. Cada entrada contiene un segmento y un desplazamiento; el procesador la consulta cuando se ejecuta una interrupción.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>La IVT ocupa exactamente 1 KB: 256 entradas × 4 bytes. Es una tabla de despacho, no un planificador de procesos.</p>
+          <p>En la etapa 3 el kernel no “hereda” una IVT inmutable: la modifica para exponer sus propios servicios, especialmente INT 21h.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="arranque-2" data-title="Arranque: configuración y shell" data-section="Arranque" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Arranque</p>
+              <h1>Configuración y shell</h1>
+            </div>
+            <span class="slide-tag">Etapas 4–6</span>
+          </header>
+          <div class="grid three">
+            <div class="card step-card">
+              <span class="step-num">4</span>
+              <h3>CONFIG.SYS / FDCONFIG.SYS</h3>
+              <ul>
+                <li>El kernel lee parámetros de memoria.</li>
+                <li>Carga drivers de bajo nivel.</li>
+                <li>Define la directiva <code>SHELL</code>.</li>
+                <li>Cada driver actualiza la IVT.</li>
+              </ul>
+            </div>
+            <div class="card step-card">
+              <span class="step-num">5</span>
+              <h3>COMMAND.COM / FreeCOM</h3>
+              <ul>
+                <li>Intérprete de comandos interactivo.</li>
+                <li>Procesa <code>AUTOEXEC.BAT</code>.</li>
+                <li>Configura <code>PATH</code>, teclado y TSR.</li>
+              </ul>
+            </div>
+            <div class="card step-card">
+              <span class="step-num">6</span>
+              <h3>Prompt <code>C:\&gt;</code></h3>
+              <ul>
+                <li>El sistema queda a la espera de órdenes.</li>
+                <li>El kernel coordina las llamadas por la IVT final.</li>
+                <li>Los TSR permanecen residentes y pasivos.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <caption class="sr-only">Archivos del arranque de FreeDOS</caption>
+              <thead><tr><th>Archivo</th><th>Función</th></tr></thead>
+              <tbody>
+                <tr><td><code>KERNEL.SYS</code></td><td>Núcleo del sistema; servicios y gestión de memoria/procesos.</td></tr>
+                <tr><td><code>CONFIG.SYS</code></td><td>Configuración de memoria y drivers de bajo nivel.</td></tr>
+                <tr><td><code>COMMAND.COM</code></td><td>Intérprete de comandos (FreeCOM).</td></tr>
+                <tr><td><code>AUTOEXEC.BAT</code></td><td>Variables de entorno, teclado y programas TSR.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Si aparece la duda: COMMAND.COM es el nombre histórico del intérprete; en FreeDOS el proyecto se llama FreeCOM y es compatible.</p>
+          <p>Los TSR se cargan en AUTOEXEC.BAT y quedan enganchados en la IVT. No se ejecutan en paralelo: reaccionan a una interrupción.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="kernel" data-title="Kernel: el mediador" data-section="Kernel" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Kernel</p>
+              <h1>Kernel: el mediador</h1>
+            </div>
+            <span class="slide-tag">Núcleo</span>
+          </header>
+          <p class="lead">El kernel traduce las operaciones abstractas de las aplicaciones al mundo físico del procesador, la memoria y los dispositivos.</p>
+          <div class="layer-flow" aria-label="Capas entre aplicación y hardware">
+            <div class="layer">Aplicación</div>
+            <div class="layer accent">Kernel</div>
+            <div class="layer">Drivers / controladores</div>
+            <div class="layer">Hardware</div>
+          </div>
+          <div class="grid two">
+            <div class="card">
+              <h3>Procesador</h3>
+              <p>Gestiona las tareas y decide qué código se ejecuta en cada momento.</p>
+            </div>
+            <div class="card">
+              <h3>Memoria</h3>
+              <p>Asigna segmentos a cada programa y evita que uno invada la memoria de otro.</p>
+            </div>
+            <div class="card">
+              <h3>Componentes</h3>
+              <p>Habla con el hardware mediante drivers: audio, red, GPU, almacenamiento. Pueden ser del kernel o propietarios.</p>
+            </div>
+            <div class="card">
+              <h3>Aislamiento y seguridad</h3>
+              <p>Es consecuencia de la mediación. En FreeDOS este aislamiento es mínimo porque todo corre en modo real.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Principio rector: un programa no debería manipular directamente los componentes. El kernel actúa como orquestador entre la instrucción y el hardware.</p>
+          <p>Matizar: en FreeDOS la mediación existe, pero no hay protección de memoria ni cambio de nivel de privilegio. Es un kernel monolítico simple.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="tipos-kernel" data-title="Tipos de kernel" data-section="Kernel" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Kernel</p>
+              <h1>Tipos de kernel</h1>
+            </div>
+            <span class="slide-tag">Arquitecturas</span>
+          </header>
+          <div class="grid three">
+            <div class="card kernel-card">
+              <div class="mini-kernel" aria-hidden="true">
+                <span>Apps</span>
+                <div class="mini-layer accent">Kernel + drivers</div>
+                <span>Hardware</span>
+              </div>
+              <h3>Monolítico</h3>
+              <p>Memoria, procesador y drivers están en el mismo núcleo. Si falla un driver, puede caer todo el sistema.</p>
+              <p class="small">Ejemplos: Linux, Android, FreeDOS.</p>
+            </div>
+            <div class="card kernel-card">
+              <div class="mini-kernel" aria-hidden="true">
+                <span>Apps + drivers</span>
+                <div class="mini-layer accent">Kernel mínimo</div>
+                <span>Hardware</span>
+              </div>
+              <h3>Microkernel</h3>
+              <p>Solo gestiona memoria y procesador. Los drivers se ejecutan como programas comunes, con más aislamiento.</p>
+              <p class="small">Ejemplos: QNX, Minix.</p>
+            </div>
+            <div class="card kernel-card">
+              <div class="mini-kernel" aria-hidden="true">
+                <span>Apps</span>
+                <div class="mini-layer accent">Microkernel + servicios</div>
+                <span>Hardware</span>
+              </div>
+              <h3>Híbrido</h3>
+              <p>Base de microkernel con servicios autorizados dentro del bloque principal.</p>
+              <p class="small">Ejemplos: Windows NT, macOS.</p>
+            </div>
+          </div>
+          <div class="callout">
+            <p><strong>FreeDOS es monolítico:</strong> el kernel, la gestión de memoria y los servicios principales comparten el mismo espacio de ejecución.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>No profundizar en microkernels: el objetivo es que se entienda la diferencia entre “todo junto” y “núcleo mínimo con servicios externos”.</p>
+          <p>En FreeDOS la discusión es breve porque el sistema es monotarea y no tiene protección de memoria.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="componentes" data-title="Componentes de FreeDOS" data-section="Kernel" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Kernel</p>
+              <h1>Componentes de FreeDOS</h1>
+            </div>
+            <span class="slide-tag">Tres piezas</span>
+          </header>
+          <div class="grid three">
+            <div class="card">
+              <h3>Kernel</h3>
+              <p><code>KERNEL.SYS</code>: servicios del sistema, gestión de memoria y de procesos.</p>
+            </div>
+            <div class="card">
+              <h3>Intérprete de comandos</h3>
+              <p><code>FreeCOM</code> / <code>COMMAND.COM</code>: interfaz de línea de comandos y ejecución de archivos <code>.BAT</code>.</p>
+            </div>
+            <div class="card">
+              <h3>Utilidades CLI</h3>
+              <p>Programas como <code>EDIT</code>, <code>FDISK</code>, <code>MEM</code>, <code>CHKDSK</code> y <code>DEBUG</code>.</p>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <caption class="sr-only">Utilidades incluidas en FreeDOS</caption>
+              <thead><tr><th>Utilidad</th><th>Área</th><th>Función</th></tr></thead>
+              <tbody>
+                <tr><td><code>FORMAT</code></td><td>Discos</td><td>Da formato lógico a una unidad para FAT.</td></tr>
+                <tr><td><code>FDISK</code></td><td>Discos</td><td>Crea, modifica y elimina particiones.</td></tr>
+                <tr><td><code>EDIT</code></td><td>Texto</td><td>Editor de pantalla completa para configuraciones.</td></tr>
+                <tr><td><code>XCOPY</code></td><td>Archivos</td><td>Copia estructuras completas de directorios.</td></tr>
+                <tr><td><code>MEM</code></td><td>Diagnóstico</td><td>Muestra memoria convencional, UMB y XMS.</td></tr>
+                <tr><td><code>CHKDSK</code></td><td>Diagnóstico</td><td>Verifica la integridad lógica del sistema FAT.</td></tr>
+                <tr><td><code>ATTRIB</code></td><td>Archivos</td><td>Consulta y modifica atributos.</td></tr>
+                <tr><td><code>DEBUG</code></td><td>Programación</td><td>Depurador de bajo nivel: registros y memoria.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout">
+            <p><strong>Mantenimiento:</strong> kernel, shell y utilidades son proyectos distintos, mantenidos por la comunidad bajo el mismo objetivo de compatibilidad.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>No memorizar la tabla completa: ubicar las utilidades por área y mencionar las que se usan en las prácticas (DEBUG, MEM, FDISK, FORMAT).</p>
+          <p>FreeCOM se carga al final del arranque según la directiva SHELL de CONFIG.SYS y permanece residente durante la sesión.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="modo-real" data-title="Modo real: segmento y desplazamiento" data-section="Arquitectura" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Arquitectura</p>
+              <h1>Modo real: segmento y desplazamiento</h1>
+            </div>
+            <span class="slide-tag">16 bits → 20 bits</span>
+          </header>
+          <p class="lead">Los registros son de 16 bits, pero el bus de direcciones necesita 20 bits para acceder a 1 MB. La dirección física se calcula combinando segmento y offset.</p>
+          <div class="grid two">
+            <div class="card">
+              <h3>Calculadora de dirección</h3>
+              <div class="calc">
+                <div class="field">
+                  <label for="segInput">Segmento (hex)</label>
+                  <input id="segInput" type="text" value="0100" inputmode="text" autocomplete="off" spellcheck="false" aria-describedby="calcFormula">
+                </div>
+                <div class="field">
+                  <label for="offInput">Desplazamiento (hex)</label>
+                  <input id="offInput" type="text" value="10D1" inputmode="text" autocomplete="off" spellcheck="false" aria-describedby="calcFormula">
+                </div>
+                <div class="calc-result">
+                  <span>Dirección física</span>
+                  <output id="physOut">020D1h</output>
+                </div>
+                <p class="formula" id="calcFormula"><code>(0100h × 10h) + 10D1h = 020D1h</code></p>
+                <p class="small">Rango: <code>00000h–10FFEFh</code>. La dirección puede superar levemente 1 MB por el solapamiento del último segmento.</p>
+              </div>
+            </div>
+            <div class="stack">
+              <div class="card">
+                <h3>Segmentos</h3>
+                <ul>
+                  <li><strong>CS</strong>: instrucciones.</li>
+                  <li><strong>DS</strong>: variables.</li>
+                  <li><strong>SS</strong>: pila.</li>
+                  <li><strong>ES</strong>: cadenas o memoria de video.</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h3>Sin protección</h3>
+                <p>No hay paginación, multiproceso ni niveles de privilegio. El programa puede controlar todo el procesador.</p>
+              </div>
+              <div class="callout">
+                <p><strong>Fórmula:</strong> dirección = (segmento × 0x10) + offset. Cada segmento abarca 64 KB porque el offset es de 16 bits.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Recalcar por qué se multiplica por 0x10: un segmento se desplaza cuatro bits a la izquierda antes de sumar el offset. Eso permite direccionar 20 bits con registros de 16.</p>
+          <p>El ejemplo 0100:10D1 produce 020D1h. Si el resultado supera 0FFFFFh, el procesador puede acceder hasta 10FFEFh por el solapamiento del segmento.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="memoria" data-title="Mapa de memoria de 1 MB" data-section="Arquitectura" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Arquitectura</p>
+              <h1>Mapa de memoria de 1 MB</h1>
+            </div>
+            <span class="slide-tag">640 KB + 384 KB</span>
+          </header>
+          <p class="lead">Todo debe funcionar dentro del primer megabyte. Para superar esa limitación se establecieron categorías de memoria.</p>
+          <div class="memmap">
+            <div class="mem-bar" role="group" aria-label="Mapa de memoria de 1 MB">
+              <button class="mem-seg conventional" type="button" data-region="conventional" aria-pressed="true">
+                <span class="mem-range">0–640 KB</span>
+                <strong>Memoria convencional</strong>
+                <span class="mem-size">640 KB</span>
+              </button>
+              <button class="mem-seg upper" type="button" data-region="upper" aria-pressed="false">
+                <span class="mem-range">640 KB–1 MB</span>
+                <strong>Upper memory</strong>
+                <span class="mem-size">384 KB · video, BIOS, ROM</span>
+              </button>
+            </div>
+            <div class="mem-extra">
+              <button class="mem-chip" type="button" data-region="umb" aria-pressed="false">UMB</button>
+              <button class="mem-chip" type="button" data-region="xms" aria-pressed="false">XMS</button>
+              <button class="mem-chip" type="button" data-region="ems" aria-pressed="false">EMS</button>
+            </div>
+            <div class="detail-panel" id="memDetail" aria-live="polite">
+              <span class="detail-tag">Convencional</span>
+              <h3>Primeros 640 KB</h3>
+              <p>Es la memoria disponible para DOS y las aplicaciones. La zona que un programa DOS puede usar directamente.</p>
+            </div>
+          </div>
+          <div class="grid three">
+            <div class="card compact"><p><strong>UMB:</strong> huecos dentro de upper que se usan para drivers y TSR.</p></div>
+            <div class="card compact"><p><strong>XMS:</strong> memoria por encima de 1 MB, accesible mediante <code>HIMEMX</code>.</p></div>
+            <div class="card compact"><p><strong>EMS:</strong> ventana paginada en upper; intercambia páginas de memoria.</p></div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Corrección: el original dice “XMR”; el término correcto es XMS (Extended Memory Specification). HIMEMX es el driver de FreeDOS que administra esa memoria.</p>
+          <p>La memoria expandida (EMS) no es lo mismo que la extendida (XMS): EMS usa una ventana en upper y conmuta páginas; XMS accede a memoria por encima de 1 MB.</p>
+          <p>El comando MEM permite ver el mapa en una sesión real.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="tsr" data-title="TSR: multitarea simulada" data-section="Arquitectura" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Arquitectura</p>
+              <h1>TSR: multitarea simulada</h1>
+            </div>
+            <span class="slide-tag">Terminate and Stay Resident</span>
+          </header>
+          <p class="lead">Sin planificador de procesos, la ejecución concurrente se simula con programas que quedan residentes en memoria y esperan una interrupción.</p>
+          <div class="state-flow" aria-label="Estados de un programa en FreeDOS">
+            <div class="state-box">
+              <strong>Programa cargado</strong>
+              <span>El kernel le asigna un bloque de memoria.</span>
+            </div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div class="state-box active">
+              <strong>En ejecución activa</strong>
+              <span>Ocupa la totalidad del procesador.</span>
+            </div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div class="state-box">
+              <strong>Termina</strong>
+              <span><code>INT 21h / 4Ch</code>: libera el MCB.</span>
+            </div>
+          </div>
+          <div class="state-flow" aria-label="Ciclo de un programa TSR">
+            <div class="state-box">
+              <strong>TSR instalado</strong>
+              <span>No libera memoria al finalizar.</span>
+            </div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div class="state-box waiting">
+              <strong>Residente e inactivo</strong>
+              <span>Espera una interrupción específica.</span>
+            </div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div class="state-box active">
+              <strong>Rutina de manejo</strong>
+              <span>Se ejecuta momentáneamente y retorna con <code>IRET</code>.</span>
+            </div>
+          </div>
+          <div class="grid two">
+            <div class="card">
+              <h3>Ejemplos</h3>
+              <ul>
+                <li><code>CTMOUSE.EXE</code>: controlador de mouse.</li>
+                <li>Gestores de discos.</li>
+                <li>Utilidades de captura de pantalla.</li>
+              </ul>
+            </div>
+            <div class="callout warn">
+              <p><strong>No hay paralelismo real:</strong> el TSR no se ejecuta al mismo tiempo que el programa activo. Solo reacciona cuando ocurre su interrupción.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>La IVT funciona como tabla de despacho para los TSR, no como un administrador de tareas. No hay planificación ni quantum.</p>
+          <p>La frase del original sobre la IVT como “administrador de tareas” es imprecisa: la IVT solo contiene punteros a rutinas.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="ivt" data-title="IVT e INT 21h" data-section="Arquitectura" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Arquitectura</p>
+              <h1>IVT e INT 21h</h1>
+            </div>
+            <span class="slide-tag">Interrupciones por software</span>
+          </header>
+          <p class="lead">La IVT tiene 256 entradas de 4 bytes en los primeros 1 KB. Cada entrada apunta a una rutina; <code>INT 21h</code> es el catálogo de servicios del kernel.</p>
+          <div class="int-widget">
+            <div class="int-flow" id="intFlow" role="group" aria-label="Flujo de una llamada INT 21h">
+              <button class="int-node" type="button" data-int="0" aria-pressed="true"><strong>Programa</strong><span>quiere crear un archivo</span></button>
+              <span class="flow-arrow" aria-hidden="true">→</span>
+              <button class="int-node" type="button" data-int="1" aria-pressed="false"><strong>AH = 3Ch</strong><span>número de función</span></button>
+              <span class="flow-arrow" aria-hidden="true">→</span>
+              <button class="int-node" type="button" data-int="2" aria-pressed="false"><strong>INT 21h</strong><span>interrupción de software</span></button>
+              <span class="flow-arrow" aria-hidden="true">→</span>
+              <button class="int-node" type="button" data-int="3" aria-pressed="false"><strong>IVT[21h]</strong><span>apunta al kernel</span></button>
+              <span class="flow-arrow" aria-hidden="true">→</span>
+              <button class="int-node" type="button" data-int="4" aria-pressed="false"><strong>Kernel</strong><span>ejecuta la rutina</span></button>
+              <span class="flow-arrow" aria-hidden="true">→</span>
+              <button class="int-node" type="button" data-int="5" aria-pressed="false"><strong>IRET</strong><span>vuelve al programa</span></button>
+            </div>
+            <div class="detail-panel" id="intDetail" aria-live="polite">
+              <span class="detail-tag">Paso 1</span>
+              <h3>El programa prepara la llamada</h3>
+              <p>El programa coloca en <code>AH</code> el número de función que necesita. Para crear un archivo usa <code>3Ch</code>; los parámetros adicionales van en otros registros.</p>
+            </div>
+            <button class="btn" id="intPlay" type="button">Recorrer automáticamente</button>
+          </div>
+          <div class="grid two">
+            <div class="table-wrap">
+              <table>
+                <caption class="sr-only">Interrupciones importantes</caption>
+                <thead><tr><th>Interrupción</th><th>Función</th></tr></thead>
+                <tbody>
+                  <tr><td><code>INT 10h</code></td><td>Servicios de video.</td></tr>
+                  <tr><td><code>INT 13h</code></td><td>Acceso a disco de bajo nivel / BIOS.</td></tr>
+                  <tr><td><code>INT 16h</code></td><td>Servicios de teclado.</td></tr>
+                  <tr><td><code>INT 21h</code></td><td>Servicios del sistema DOS.</td></tr>
+                  <tr><td><code>INT 20h</code></td><td>Terminar programa (histórico).</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <caption class="sr-only">Funciones de INT 21h</caption>
+                <thead><tr><th>AH</th><th>Función</th></tr></thead>
+                <tbody>
+                  <tr><td><code>01h</code></td><td>Leer carácter por teclado.</td></tr>
+                  <tr><td><code>09h</code></td><td>Escribir cadena en pantalla.</td></tr>
+                  <tr><td><code>3Ch</code></td><td>Crear archivo.</td></tr>
+                  <tr><td><code>3Dh</code></td><td>Abrir archivo.</td></tr>
+                  <tr><td><code>3Fh</code></td><td>Leer archivo.</td></tr>
+                  <tr><td><code>40h</code></td><td>Escribir archivo.</td></tr>
+                  <tr><td><code>2Ah</code></td><td>Consultar fecha.</td></tr>
+                  <tr><td><code>4Ch</code></td><td>Terminar programa.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Recorrer el flujo con un ejemplo concreto: guardar una partida. El programa no habla con los cables del disco; llama a INT 21h y el kernel hace el trabajo.</p>
+          <p>En DOS no hay cambio de modo usuario a kernel: todo corre al mismo nivel. Por eso una interrupción de software es suficiente para exponer los servicios.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="mcb-psp" data-title="MCB, PSP y programa" data-section="Arquitectura" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Arquitectura</p>
+              <h1>MCB, PSP y programa</h1>
+            </div>
+            <span class="slide-tag">Bloque de memoria</span>
+          </header>
+          <p class="lead">Cada aplicación recibe un bloque con tres piezas consecutivas: una frontera, una cabecera y el código real.</p>
+          <div class="layout-scroll">
+            <div class="layout-blocks" role="group" aria-label="Bloque de memoria de un programa">
+              <button class="layout-block mcb" type="button" data-block="mcb" aria-pressed="true">
+                <strong>MCB</strong>
+                <span>16 bytes</span>
+                <small>Frontera</small>
+              </button>
+              <button class="layout-block psp" type="button" data-block="psp" aria-pressed="false">
+                <strong>PSP</strong>
+                <span>256 bytes</span>
+                <small>Cabecera</small>
+              </button>
+              <button class="layout-block program" type="button" data-block="program" aria-pressed="false">
+                <strong>Programa</strong>
+                <span>lo que necesite</span>
+                <small>Código + datos + pila</small>
+              </button>
+            </div>
+          </div>
+          <div class="detail-panel" id="blockDetail" aria-live="polite">
+            <span class="detail-tag">MCB</span>
+            <h3>Memory Control Block · 16 bytes</h3>
+            <p>Es el “cartel” del kernel: indica dónde empieza el bloque, cuánto mide y dónde termina. También registra el PSP propietario y si es el último bloque (<code>Z</code>) o hay otro después (<code>M</code>).</p>
+          </div>
+          <div class="grid three">
+            <div class="card compact"><p><strong>MCB:</strong> 16 bytes de control.</p></div>
+            <div class="card compact"><p><strong>PSP:</strong> 256 bytes de cabecera del programa.</p></div>
+            <div class="card compact"><p><strong>Programa:</strong> código, variables y pila.</p></div>
+          </div>
+          <div class="callout warn">
+            <p><strong>Precisión:</strong> el PSP mide <strong>256 bytes</strong>, no 256 bits. Los primeros 256 bytes del segmento están reservados para esa cabecera; por eso los programas <code>.COM</code> comienzan en el offset <code>100h</code>.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Usar la analogía del original: MCB es el cartel del kernel, PSP es el DNI del programa y el programa es el cuerpo.</p>
+          <p>Relacionar con DEBUG: al ensamblar en 100h se está dejando libre el PSP. Ese es el motivo técnico del offset inicial.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="registros" data-title="Registros x86 de 16 bits" data-section="Arquitectura" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Arquitectura</p>
+              <h1>Registros x86 de 16 bits</h1>
+            </div>
+            <span class="slide-tag">CPU</span>
+          </header>
+          <p class="lead">Los registros son almacenamientos ultra rápidos dentro del procesador. Los de propósito general miden 16 bits y pueden dividirse en dos mitades de 8 bits.</p>
+          <div class="reg-widget">
+            <div class="reg-grid" role="group" aria-label="Registros del procesador">
+              <button class="reg" type="button" data-reg="AX" aria-pressed="true">
+                <span class="reg-name">AX</span>
+                <span class="reg-halves"><span>AH</span><span>AL</span></span>
+              </button>
+              <button class="reg" type="button" data-reg="BX" aria-pressed="false">
+                <span class="reg-name">BX</span>
+                <span class="reg-halves"><span>BH</span><span>BL</span></span>
+              </button>
+              <button class="reg" type="button" data-reg="CX" aria-pressed="false">
+                <span class="reg-name">CX</span>
+                <span class="reg-halves"><span>CH</span><span>CL</span></span>
+              </button>
+              <button class="reg" type="button" data-reg="DX" aria-pressed="false">
+                <span class="reg-name">DX</span>
+                <span class="reg-halves"><span>DH</span><span>DL</span></span>
+              </button>
+              <button class="reg" type="button" data-reg="SP" aria-pressed="false"><span class="reg-name">SP</span><span class="reg-note">Stack Pointer</span></button>
+              <button class="reg" type="button" data-reg="BP" aria-pressed="false"><span class="reg-name">BP</span><span class="reg-note">Base Pointer</span></button>
+              <button class="reg" type="button" data-reg="SI" aria-pressed="false"><span class="reg-name">SI</span><span class="reg-note">Source Index</span></button>
+              <button class="reg" type="button" data-reg="DI" aria-pressed="false"><span class="reg-name">DI</span><span class="reg-note">Destination Index</span></button>
+            </div>
+            <div class="detail-panel" id="regDetail" aria-live="polite">
+              <span class="detail-tag">AX · acumulador</span>
+              <h3>Operaciones e interrupciones</h3>
+              <p>Se usa en operaciones aritméticas y como registro principal de las interrupciones. En <code>INT 21h</code>, <code>AH</code> transporta el número de función. Se divide en <code>AH</code> (alto) y <code>AL</code> (bajo).</p>
+            </div>
+          </div>
+          <div class="grid two">
+            <div class="card">
+              <h3>Segmento</h3>
+              <p><code>CS</code> código, <code>DS</code> datos, <code>SS</code> pila, <code>ES</code> extra. Apuntan a bloques de 64 KB.</p>
+            </div>
+            <div class="card">
+              <h3>Movimiento y pila</h3>
+              <p><code>MOV destino, origen</code> copia datos. <code>PUSH</code> y <code>POP</code> manipulan la pila LIFO, usada para guardar estado antes de llamar a una subrutina.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>No todos los registros se pueden fraccionar: SP, BP, SI, DI y los de segmento no tienen mitad alta/baja accesible.</p>
+          <p>Relacionar AX con INT 21h: AH lleva la función y AL suele llevar un parámetro o resultado. En el ejemplo de DEBUG, AH=09h imprime una cadena y DX apunta al texto.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="vigencia" data-title="Casos de uso contemporáneos" data-section="Vigencia" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Vigencia</p>
+              <h1>Casos de uso contemporáneos · 2026</h1>
+            </div>
+            <span class="slide-tag">Nichos técnicos</span>
+          </header>
+          <p class="lead">La continuidad de FreeDOS no se explica por nostalgia, sino por necesidades concretas donde sus limitaciones se convierten en ventajas.</p>
+          <div class="grid two">
+            <div class="card">
+              <h3>Actualización de firmware</h3>
+              <p>Herramientas de flashing para placas base, controladoras y almacenamiento. El acceso directo al hardware evita intermediarios y FreeDOS reemplaza a las versiones antiguas de MS-DOS.</p>
+            </div>
+            <div class="card">
+              <h3>Software heredado</h3>
+              <p>CNC, instrumental de laboratorio y sistemas de punto de venta cuya reescritura no es viable. FreeDOS sustituye una licencia de MS-DOS por una alternativa libre.</p>
+            </div>
+            <div class="card">
+              <h3>Sistemas embebidos</h3>
+              <p>Entornos determinísticos, con tiempos de respuesta predecibles y sin la sobrecarga de un planificador multitarea. La ausencia de memoria virtual vuelve el comportamiento auditable.</p>
+            </div>
+            <div class="card">
+              <h3>Preservación y retrocomputación</h3>
+              <p>Entorno libre y legalmente distribuible para ejecutar software y videojuegos de 1981 a mediados de los 90, sobre hardware original o emulado.</p>
+            </div>
+          </div>
+          <div class="callout">
+            <p><strong>Patrón común:</strong> compatibilidad, acceso directo al hardware, bajo consumo y comportamiento predecible. No es un reemplazo de Windows o Linux.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Marcar la diferencia entre “usar FreeDOS porque es antiguo” y “usar FreeDOS porque resuelve un problema actual”.</p>
+          <p>El caso de firmware es el más extendido: muchas utilidades de BIOS/UEFI siguen distribuyéndose como ejecutables DOS.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="limites" data-title="Límites y valor pedagógico" data-section="Vigencia" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Vigencia</p>
+              <h1>Límites y valor pedagógico</h1>
+            </div>
+            <span class="slide-tag">Balance</span>
+          </header>
+          <div class="grid two">
+            <div class="card">
+              <h3>Desafíos del proyecto</h3>
+              <ul>
+                <li><strong>Relevo generacional:</strong> pocos colaboradores con conocimiento profundo de modo real y ensamblador x86.</li>
+                <li><strong>Hardware contemporáneo:</strong> los fabricantes reducen el soporte de Legacy BIOS en favor de UEFI puro.</li>
+                <li><strong>Percepción pública:</strong> la asociación automática con obsolescencia dificulta reconocer sus usos industriales.</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Valor pedagógico</h3>
+              <ul>
+                <li>Modelo simple para enseñar gestión de memoria.</li>
+                <li>Interrupciones y estructuras de control visibles.</li>
+                <li>Arranque completo y trazable.</li>
+                <li>Menos capas conceptuales que un sistema moderno.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="grid two">
+            <div class="callout warn">
+              <p><strong>Compatibilidad:</strong> en equipos muy nuevos puede requerir modo legacy, un hipervisor o un emulador, según las instrucciones disponibles del procesador.</p>
+            </div>
+            <div class="callout">
+              <p><strong>Valor real:</strong> FreeDOS permite ver el recorrido de una instrucción y el movimiento de datos dentro del circuito informático sin la complejidad de un sistema multitarea moderno.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>No ocultar las limitaciones: el proyecto depende de trabajo voluntario y el soporte de arranque legacy se reduce.</p>
+          <p>El valor pedagógico es el argumento más fuerte para esta materia: el sistema es pequeño, pero internamente coherente.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="conclusiones" data-title="Conclusiones" data-section="Vigencia" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Vigencia</p>
+              <h1>Conclusiones</h1>
+            </div>
+            <span class="slide-tag">Cierre técnico</span>
+          </header>
+          <div class="grid two">
+            <div class="card numbered">
+              <span class="num">01</span>
+              <h3>Compatibilidad antes que innovación</h3>
+              <p>FreeDOS no busca superar a los sistemas modernos. Garantiza continuidad para un ecosistema de software y hardware que quedó sin soporte comercial.</p>
+            </div>
+            <div class="card numbered">
+              <span class="num">02</span>
+              <h3>Coherencia interna</h3>
+              <p>Modo real de 16 bits, segmento:offset, PSP/MCB, INT 21h y esquemas UMB/XMS/EMS responden a las restricciones del hardware original.</p>
+            </div>
+            <div class="card numbered">
+              <span class="num">03</span>
+              <h3>Evolución selectiva</h3>
+              <p>La incorporación de FAT32 y direccionamiento LBA muestra adaptación al almacenamiento contemporáneo sin romper la compatibilidad binaria.</p>
+            </div>
+            <div class="card numbered">
+              <span class="num">04</span>
+              <h3>Vigencia concreta</h3>
+              <p>Firmware, software heredado, embebidos y preservación son necesidades técnicas reales, no curiosidad histórica.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Cerrar con las cuatro ideas y volver al recorrido: historia, archivos, arranque, kernel, arquitectura y prácticas.</p>
+          <p>Evitar frases motivacionales. La conclusión es técnica: el sistema sigue siendo útil en nichos identificables.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="virtualizacion" data-title="Virtualización y emulación" data-section="Virtualización" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Virtualización</p>
+              <h1>Virtualización y emulación</h1>
+            </div>
+            <span class="slide-tag">DOSBox-X</span>
+          </header>
+          <p class="lead">Ambas permiten ejecutar otro sistema, pero no hacen lo mismo. La diferencia está en si comparten la arquitectura del host o si la simulan.</p>
+          <div class="segmented" role="tablist" aria-label="Comparación entre virtualizador y emulador">
+            <button class="seg-btn is-active" id="tabVirtual" type="button" role="tab" aria-selected="true" aria-controls="panelVirtual" data-mode="virtual">Virtualizador</button>
+            <button class="seg-btn" id="tabEmulator" type="button" role="tab" aria-selected="false" aria-controls="panelEmulator" data-mode="emulator">Emulador</button>
+          </div>
+          <div class="v-panel" id="panelVirtual" role="tabpanel" aria-labelledby="tabVirtual">
+            <div class="grid two">
+              <div class="stack">
+                <div class="v-stack" aria-label="Capas de un virtualizador">
+                  <div class="v-layer">Sistema invitado</div>
+                  <div class="v-layer accent">Hipervisor</div>
+                  <div class="v-layer">Hardware del host</div>
+                </div>
+                <div class="card">
+                  <h3>Qué hace</h3>
+                  <p>Ejecuta varias máquinas virtuales sobre los mismos recursos. Requiere instrucciones de virtualización del procesador: <strong>Intel VT-x</strong> o <strong>AMD-V</strong>.</p>
+                  <p>El hipervisor puede ser de tipo 1 (cerca del hardware) o de tipo 2 (sobre un sistema operativo).</p>
+                </div>
+              </div>
+              <div class="stack">
+                <div class="card">
+                  <h3>Ejemplos</h3>
+                  <ul>
+                    <li>VirtualBox: tipo 2.</li>
+                    <li>KVM: tipo 1 integrado en Linux.</li>
+                    <li>QEMU + KVM: alto rendimiento.</li>
+                  </ul>
+                </div>
+                <div class="card">
+                  <h3>Cuándo usarlo</h3>
+                  <ul>
+                    <li>VPS y cloud: AWS, Azure, DigitalOcean.</li>
+                    <li>Laboratorios, DevOps y CI/CD.</li>
+                    <li>Cuando se busca el mayor rendimiento nativo posible.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="v-panel" id="panelEmulator" role="tabpanel" aria-labelledby="tabEmulator" hidden>
+            <div class="grid two">
+              <div class="stack">
+                <div class="v-stack" aria-label="Capas de un emulador">
+                  <div class="v-layer">Aplicación invitada</div>
+                  <div class="v-layer">Sistema invitado</div>
+                  <div class="v-layer accent">CPU, RAM, BIOS y dispositivos emulados</div>
+                  <div class="v-layer">Traducción / interpretación</div>
+                  <div class="v-layer">Hardware del host</div>
+                </div>
+                <div class="card">
+                  <h3>Qué hace</h3>
+                  <p>Recrea un hardware completo en software: procesador, memoria, BIOS, sonido y red. Puede ejecutar una arquitectura distinta a la del host.</p>
+                  <p>Traduce cada instrucción y usa buffers en memoria; por eso consume más recursos que la virtualización.</p>
+                </div>
+              </div>
+              <div class="stack">
+                <div class="card">
+                  <h3>Ejemplo</h3>
+                  <p><strong>DOSBox-X</strong>: emula el entorno necesario para ejecutar DOS y software de 16 bits.</p>
+                </div>
+                <div class="card">
+                  <h3>Cuándo usarlo</h3>
+                  <ul>
+                    <li>Arquitecturas cruzadas: Android en Windows.</li>
+                    <li>Preservación y prueba de sistemas antiguos.</li>
+                    <li>Ingeniería inversa y depuración de firmware.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>La diferencia clave: el virtualizador comparte la ISA del host; el emulador simula otra arquitectura. Si el software es de 16 bits y el host es x86 moderno, igualmente se usa emulación por el entorno de hardware y el arranque.</p>
+          <p>DOSBox-X se usa en las prácticas porque permite montar imágenes, discos y carpetas del host sin instalar FreeDOS en el equipo real.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="practica-dosbox" data-title="Práctica: preparar DOSBox-X" data-section="Prácticas" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Práctica 1</p>
+              <h1>Preparar el entorno DOSBox-X</h1>
+            </div>
+            <span class="slide-tag">Disco virtual</span>
+          </header>
+          <p class="lead">Crear un disco virtual de 50 MB, instalar FreeDOS y dejar NASM disponible en el <code>PATH</code>.</p>
+          <div class="grid two">
+            <div class="card">
+              <h3>Secuencia</h3>
+              <ol class="steps">
+                <li>Crear la imagen de disco con <code>imgmake</code>.</li>
+                <li>Montarla como <code>C:</code> y montar la carpeta del host como <code>D:</code>.</li>
+                <li>Copiar FreeDOS, <code>KERNEL.SYS</code> y <code>COMMAND.COM</code>.</li>
+                <li>Escribir el sector de arranque con <code>sys c:</code>.</li>
+                <li>Copiar NASM y configurar <code>PATH</code>.</li>
+                <li>Verificar con <code>nasm -v</code>.</li>
+              </ol>
+            </div>
+            <div class="callout warn">
+              <p><strong>Antes de ejecutar:</strong> los comandos se escriben desde la unidad <code>Z:</code> de DOSBox-X. Ajustar las rutas del host a la ubicación real de la carpeta <code>C:\FreeDOS</code>.</p>
+            </div>
+          </div>
+          <div class="code-pair">
+            <pre class="code"><code>imgmake C:\FreeDOS\freedos.img -t hd -size 50
+
+imgmount c C:\FreeDOS\freedos.img -t hdd
+mount d C:\FreeDOS
+d:
+xcopy d:\freedos c:\freedos /s /e
+copy d:\kernel.sys c:\
+copy d:\command.com c:\
+c:
+sys c:</code></pre>
+            <pre class="code"><code>md c:\nasm
+d:
+cd NASM-2~1.05R
+xcopy *.* c:\nasm /s /e
+c:
+set PATH=%PATH%;C:\NASM
+nasm -v</code></pre>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>No eliminar <code>-fs fat</code> sin motivo: en el montaje de la imagen conviene dejar que DOSBox-X lea la geometría real de la partición.</p>
+          <p>Si <code>sys c:</code> falla, revisar que <code>KERNEL.SYS</code> y <code>COMMAND.COM</code> estén en la raíz de <code>C:</code> y que la imagen esté montada como disco duro.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="practica-debug" data-title="Práctica: programa con DEBUG" data-section="Prácticas" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Práctica 2</p>
+              <h1>Programa con DEBUG</h1>
+            </div>
+            <span class="slide-tag">hola.com</span>
+          </header>
+          <p class="lead">Ensamblar a mano un programa que imprime <code>Hola Mundo!</code>, calcular su tamaño y escribirlo en disco.</p>
+          <div class="grid two">
+            <pre class="code"><code>C:\&gt; debug
+-a 100
+xxxx:0100 mov ah, 09
+xxxx:0102 mov dx, 0109
+xxxx:0105 int 21
+xxxx:0107 int 20
+xxxx:0109
+-e 0109 'Hola Mundo!$'
+-r cx
+:15
+-n hola.com
+-w
+-q</code></pre>
+            <div class="stack">
+              <div class="card">
+                <h3>Por qué empieza en 100h</h3>
+                <p>DEBUG reserva los primeros 256 bytes para el PSP: parámetros de consola, salida de emergencia y tablas temporales. El código comienza después.</p>
+              </div>
+              <div class="card">
+                <h3>Tamaño total</h3>
+                <p><code>CX = 15h</code> = 21 bytes decimales: 9 bytes de código + 12 bytes de la cadena.</p>
+              </div>
+            </div>
+          </div>
+          <div class="byte-scroll">
+            <div class="byte-grid" role="img" aria-label="Distribución de 21 bytes en memoria desde 0100h hasta 0114h">
+              <span class="byte code"><span class="addr">0100</span>B4</span>
+              <span class="byte code"><span class="addr">0101</span>09</span>
+              <span class="byte code"><span class="addr">0102</span>BA</span>
+              <span class="byte code"><span class="addr">0103</span>09</span>
+              <span class="byte code"><span class="addr">0104</span>01</span>
+              <span class="byte code"><span class="addr">0105</span>CD</span>
+              <span class="byte code"><span class="addr">0106</span>21</span>
+              <span class="byte code"><span class="addr">0107</span>CD</span>
+              <span class="byte code"><span class="addr">0108</span>20</span>
+              <span class="byte string"><span class="addr">0109</span>48</span>
+              <span class="byte string"><span class="addr">010A</span>6F</span>
+              <span class="byte string"><span class="addr">010B</span>6C</span>
+              <span class="byte string"><span class="addr">010C</span>61</span>
+              <span class="byte string"><span class="addr">010D</span>20</span>
+              <span class="byte string"><span class="addr">010E</span>4D</span>
+              <span class="byte string"><span class="addr">010F</span>75</span>
+              <span class="byte string"><span class="addr">0110</span>6E</span>
+              <span class="byte string"><span class="addr">0111</span>64</span>
+              <span class="byte string"><span class="addr">0112</span>6F</span>
+              <span class="byte string"><span class="addr">0113</span>21</span>
+              <span class="byte string"><span class="addr">0114</span>24</span>
+            </div>
+          </div>
+          <div class="legend">
+            <span><i class="swatch code"></i> Código · 9 bytes</span>
+            <span><i class="swatch string"></i> Cadena ASCII · 12 bytes</span>
+            <span><strong>Total: 21 bytes = 15h</strong></span>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Desglosar el tamaño: <code>mov ah,09</code> ocupa 2 bytes; <code>mov dx,0109</code> ocupa 3; <code>int 21</code> 2; <code>int 20</code> 2. Total código: 9. La cadena <code>'Hola Mundo!$'</code> ocupa 12.</p>
+          <p><code>int 20</code> es la salida histórica. En código nuevo conviene <code>INT 21h / AH=4Ch</code>, pero DEBUG acepta la forma corta.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="practica-nasm" data-title="Práctica: ensamblador NASM" data-section="Prácticas" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Práctica 3</p>
+              <h1>Ensamblador NASM</h1>
+            </div>
+            <span class="slide-tag">.COM</span>
+          </header>
+          <p class="lead">El mismo programa, ahora en ensamblador: directiva <code>org 100h</code>, impresión por <code>INT 21h</code> y salida por <code>4Ch</code>.</p>
+          <div class="grid two">
+            <pre class="code"><code>org 100h
+
+section .text
+  mov ah, 09h
+  mov dx, msg
+  int 21h
+
+  mov ah, 4Ch
+  mov al, 00h
+  int 21h
+
+section .data
+  msg db 'Hola Mundo!', 0Dh, 0Ah, '$'</code></pre>
+            <div class="stack">
+              <div class="card">
+                <h3>Compilar y ejecutar</h3>
+                <pre class="code small"><code>nasm -f bin hola.asm -o hola.com
+hola.com</code></pre>
+              </div>
+              <div class="card">
+                <h3>Qué hace cada bloque</h3>
+                <ul>
+                  <li><code>AH=09h</code> y <code>DX=msg</code>: imprimir cadena.</li>
+                  <li><code>INT 21h</code>: llamar al kernel.</li>
+                  <li><code>AH=4Ch</code>, <code>AL=00h</code>: terminar con éxito.</li>
+                  <li><code>0Dh, 0Ah</code>: retorno de carro y salto de línea.</li>
+                  <li><code>$</code>: terminador de cadena para DOS.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="callout">
+            <p><strong>Formato:</strong> <code>org 100h</code> y <code>-f bin</code> generan un <code>.COM</code> que se carga después del PSP. El programa no necesita un encabezado <code>.EXE</code>.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Si NASM no está en el PATH, ejecutar <code>set PATH=%PATH%;C:\NASM</code> o llamar al binario con ruta completa.</p>
+          <p>La directiva <code>section .data</code> funciona con el formato binario; el mensaje queda en el mismo segmento y <code>mov dx, msg</code> resuelve la dirección.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="practica-opengem" data-title="Práctica: OpenGEM" data-section="Prácticas" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Práctica 4</p>
+              <h1>Interfaz gráfica con OpenGEM</h1>
+            </div>
+            <span class="slide-tag">GUI sobre DOS</span>
+          </header>
+          <p class="lead">OpenGEM es una interfaz gráfica que se ejecuta sobre FreeDOS. No forma parte del kernel: es una capa de software que necesita sus propios archivos y drivers.</p>
+          <div class="grid two">
+            <div class="card">
+              <h3>Preparación</h3>
+              <ol class="steps">
+                <li>Montar la ISO <code>FD14BNS.iso</code> en el explorador del host.</li>
+                <li>Extraer <code>PACKAGES\GUI\opengem</code> en <code>C:\FreeDOS\GUI\opengem</code>.</li>
+                <li>Montar la imagen de FreeDOS y entrar a <code>D:</code>.</li>
+                <li>Desmontar <code>C:</code> y montar la carpeta de OpenGEM como <code>C:</code>.</li>
+                <li>Ejecutar <code>gem</code>.</li>
+              </ol>
+            </div>
+            <pre class="code"><code>imgmount d C:\FreeDOS\freedos.img -t hdd -fs fat
+d:
+mount -u c
+mount c C:\FreeDOS\GUI\opengem
+c:
+gem</code></pre>
+          </div>
+          <div class="callout warn">
+            <p><strong>Rutas:</strong> si OpenGEM no inicia, verificar que la carpeta extraída sea la raíz montada en <code>C:</code> y que la unidad anterior se haya desmontado con <code>mount -u c</code>.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Diferenciar GUI de sistema operativo: OpenGEM es una aplicación que corre sobre DOS, igual que Windows 3.x corría sobre DOS.</p>
+          <p>Esta práctica sirve para mostrar que FreeDOS puede soportar interfaces gráficas, aunque el sistema base siga siendo de línea de comandos.</p>
+        </aside>
+      </section>
+
+      <section class="slide" id="cierre" data-title="Cierre" data-section="Cierre" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Cierre</p>
+              <h1>Conceptos para retener</h1>
+            </div>
+            <span class="slide-tag">Repaso</span>
+          </header>
+          <div class="grid two">
+            <div class="card">
+              <h3>Modelo de ejecución</h3>
+              <p>DOS es monotarea y monousuario, con registros de 16 bits, direcciones de 20 bits y sin protección de memoria.</p>
+            </div>
+            <div class="card">
+              <h3>Almacenamiento</h3>
+              <p>Un file system es índice + reglas. FAT encadena clústeres; NTFS y EXT agregan journaling y permisos.</p>
+            </div>
+            <div class="card">
+              <h3>Arranque</h3>
+              <p>BIOS/UEFI → MBR/VBR → KERNEL.SYS → CONFIG.SYS → COMMAND.COM/AUTOEXEC.BAT → <code>C:\&gt;</code>.</p>
+            </div>
+            <div class="card">
+              <h3>Interrupciones</h3>
+              <p>La IVT es una tabla de despacho. <code>INT 21h</code> expone los servicios del kernel; los TSR esperan su interrupción.</p>
+            </div>
+          </div>
+          <div class="callout">
+            <p><strong>Para practicar:</strong> repetir el recorrido en DOSBox-X, verificar el mapa con <code>MEM</code>, armar <code>hola.com</code> con DEBUG y compilar la versión NASM.</p>
+          </div>
+          <p class="closing-line">Consultas</p>
+        </div>
+        <aside class="notes">
+          <p>Repasar los cuatro bloques y abrir preguntas. Si queda tiempo, ejecutar <code>MEM</code> y comparar el mapa con la diapositiva de memoria.</p>
+          <p>No agregar frases de cierre motivacionales: terminar con los conceptos y las prácticas pendientes.</p>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="deckbar">
+      <button class="btn nav-btn" id="prevBtn" type="button" aria-label="Diapositiva anterior">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        <span>Anterior</span>
+      </button>
+      <div class="counter" aria-live="polite"><span id="currentNum">1</span> / <span id="totalNum">31</span></div>
+      <button class="btn nav-btn" id="nextBtn" type="button" aria-label="Diapositiva siguiente">
+        <span>Siguiente</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+      <div class="hint" aria-hidden="true"><kbd>←</kbd><kbd>→</kbd> · <kbd>N</kbd> notas · <kbd>F</kbd> pantalla</div>
+      <small class="copyright">© 2026 Pablo A. Cisera</small>
+    </footer>
+
+    <section class="notes-drawer" id="notesDrawer" aria-label="Notas" aria-hidden="true" inert>
+      <div class="notes-head">
+        <div>
+          <strong>Notas</strong>
+          <span id="notesSlideTitle"></span>
+        </div>
+        <button class="icon-btn" id="notesClose" type="button" aria-label="Cerrar notas">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <div class="notes-body" id="notesBody"></div>
+    </section>
+  </div>
+
+  <dialog id="overviewDialog" aria-labelledby="overviewTitle">
+    <div class="dialog-head">
+      <h2 id="overviewTitle">Índice general</h2>
+      <button class="icon-btn" type="button" data-close aria-label="Cerrar índice general">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="dialog-body">
+      <div class="overview-grid" id="overviewGrid"></div>
+    </div>
+  </dialog>
+
+  <dialog id="helpDialog" aria-labelledby="helpTitle">
+    <div class="dialog-head">
+      <h2 id="helpTitle">Atajos</h2>
+      <button class="icon-btn" type="button" data-close aria-label="Cerrar atajos">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="dialog-body">
+      <div class="table-wrap">
+        <table class="shortcuts">
+          <thead><tr><th>Tecla</th><th>Acción</th></tr></thead>
+          <tbody>
+            <tr><td><kbd>→</kbd> / <kbd>Espacio</kbd></td><td>Siguiente diapositiva</td></tr>
+            <tr><td><kbd>←</kbd></td><td>Diapositiva anterior</td></tr>
+            <tr><td><kbd>Inicio</kbd> / <kbd>Fin</kbd></td><td>Primera / última</td></tr>
+            <tr><td><kbd>N</kbd></td><td>Mostrar u ocultar notas</td></tr>
+            <tr><td><kbd>O</kbd></td><td>Abrir índice general</td></tr>
+            <tr><td><kbd>F</kbd></td><td>Pantalla completa</td></tr>
+            <tr><td><kbd>?</kbd></td><td>Esta ayuda</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>

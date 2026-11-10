@@ -1,0 +1,51 @@
+name: Verificar y desplegar en GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verificar sitio estático
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obtener código
+        uses: actions/checkout@v6
+      - name: Verificar JavaScript
+        run: node --check app.js
+      - name: Verificar archivos publicados
+        run: |
+          test -s index.html
+          test -s styles.css
+          test -s Apuntes_docente_FreeDOS.pdf
+
+  deploy:
+    name: Desplegar
+    needs: verify
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Obtener código
+        uses: actions/checkout@v6
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Publicar artefacto
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: .
+      - name: Desplegar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
