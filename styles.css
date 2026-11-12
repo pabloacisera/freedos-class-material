@@ -798,23 +798,32 @@ dialog::backdrop {
 
 .grid {
   display: grid;
-  gap: clamp(1rem, 2vw, 1.6rem);
+  gap: clamp(1rem, 2vw, 1.8rem);
   align-items: stretch;
 }
 
 .grid + .grid,
 .grid + .callout,
 .grid + .table-wrap,
+.grid + .int-widget,
+.grid + .boot-widget,
+.grid + .figure,
+.grid + .memmap,
+.grid + .tool-panel,
+.grid + .timeline,
 .table-wrap + .callout,
+.table-wrap + .grid,
 .callout + .grid,
 .flow-horizontal + .grid,
 .fat-explanation + .grid,
 .boot-widget + .callout,
+.boot-widget + .grid,
 .int-widget + .grid,
+.int-widget + .callout,
 .memmap + .grid,
 .grid + .code,
 .code-pair {
-  margin-top: clamp(1.25rem, 2.5vw, 2rem);
+  margin-top: clamp(1.25rem, 2.5vw, 2.1rem);
 }
 
 .stack {
@@ -824,7 +833,7 @@ dialog::backdrop {
 }
 
 .card {
-  padding: clamp(1rem, 2vw, 1.5rem);
+  padding: clamp(1.1rem, 2vw, 1.75rem);
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -832,11 +841,11 @@ dialog::backdrop {
 }
 
 .card.compact {
-  padding: 0.75rem 0.9rem;
+  padding: 0.9rem 1.05rem;
 }
 
 .card.compact p {
-  font-size: 0.86rem;
+  font-size: 0.9rem;
 }
 
 .card p,
@@ -848,7 +857,7 @@ dialog::backdrop {
 .card h3 + p,
 .card h3 + ul,
 .card h3 + ol {
-  margin-top: 0.45rem;
+  margin-top: 0.55rem;
 }
 
 .card ul,
@@ -2457,26 +2466,35 @@ td code {
   }
 
   .grid {
-    gap: 0.7rem;
+    gap: 0.85rem;
   }
 
   .grid + .grid,
   .grid + .callout,
   .grid + .table-wrap,
+  .grid + .int-widget,
+  .grid + .boot-widget,
+  .grid + .figure,
+  .grid + .memmap,
+  .grid + .tool-panel,
+  .grid + .timeline,
   .table-wrap + .callout,
+  .table-wrap + .grid,
   .callout + .grid,
   .flow-horizontal + .grid,
-.fat-explanation + .grid,
+  .fat-explanation + .grid,
   .boot-widget + .callout,
+  .boot-widget + .grid,
   .int-widget + .grid,
+  .int-widget + .callout,
   .memmap + .grid,
   .grid + .code,
   .code-pair {
-    margin-top: 0.7rem;
+    margin-top: 0.85rem;
   }
 
   .card {
-    padding: 0.8rem 0.85rem;
+    padding: 0.9rem 1rem;
   }
 
   .card p,
@@ -2528,26 +2546,35 @@ td code {
   .stack,
   .boot-widget,
   .int-widget {
-    gap: 0.8rem;
+    gap: 0.9rem;
   }
 
   .grid + .grid,
   .grid + .callout,
   .grid + .table-wrap,
+  .grid + .int-widget,
+  .grid + .boot-widget,
+  .grid + .figure,
+  .grid + .memmap,
+  .grid + .tool-panel,
+  .grid + .timeline,
   .table-wrap + .callout,
+  .table-wrap + .grid,
   .callout + .grid,
   .flow-horizontal + .grid,
-.fat-explanation + .grid,
+  .fat-explanation + .grid,
   .boot-widget + .callout,
+  .boot-widget + .grid,
   .int-widget + .grid,
+  .int-widget + .callout,
   .memmap + .grid,
   .grid + .code,
   .code-pair {
-    margin-top: 1rem;
+    margin-top: 1.1rem;
   }
 
   .card {
-    padding: 0.9rem 1rem;
+    padding: 1rem 1.1rem;
   }
 
   .card p,
@@ -2645,26 +2672,35 @@ td code {
   .stack,
   .boot-widget,
   .int-widget {
-    gap: 0.65rem;
+    gap: 0.8rem;
   }
 
   .grid + .grid,
   .grid + .callout,
   .grid + .table-wrap,
+  .grid + .int-widget,
+  .grid + .boot-widget,
+  .grid + .figure,
+  .grid + .memmap,
+  .grid + .tool-panel,
+  .grid + .timeline,
   .table-wrap + .callout,
+  .table-wrap + .grid,
   .callout + .grid,
   .flow-horizontal + .grid,
-.fat-explanation + .grid,
+  .fat-explanation + .grid,
   .boot-widget + .callout,
+  .boot-widget + .grid,
   .int-widget + .grid,
+  .int-widget + .callout,
   .memmap + .grid,
   .grid + .code,
   .code-pair {
-    margin-top: 0.8rem;
+    margin-top: 0.9rem;
   }
 
   .card {
-    padding: 0.75rem 0.85rem;
+    padding: 0.85rem 0.95rem;
   }
 
   .card p,

@@ -1456,7 +1456,21 @@
             </div>
             <span class="slide-tag">Interrupciones por software</span>
           </header>
-          <p class="lead">La IVT ya está cargada y el kernel la actualizó. Ahora veamos cómo una llamada a <code>INT 21h</code> termina en una rutina concreta del kernel.</p>
+          <p class="lead">La <strong>Interrupt Vector Table</strong> (IVT) es la tabla que le dice al procesador a qué rutina saltar cuando ocurre una interrupción. Sin ella, una llamada como <code>INT 21h</code> no tendría destino.</p>
+          <div class="grid three">
+            <div class="card">
+              <h3>Qué es y por qué importa</h3>
+              <p>Ocupa los primeros <strong>1 KB</strong> de RAM (<code>00000h–003FFh</code>): <strong>256 entradas de 4 bytes</strong>. Cada entrada guarda la dirección <code>segmento:offset</code> de una rutina. El procesador la consulta para despachar la interrupción.</p>
+            </div>
+            <div class="card">
+              <h3>Durante la BIOS</h3>
+              <p>El POST la llena con rutinas del firmware: <code>INT 10h</code> para video, <code>INT 13h</code> para disco y <code>INT 16h</code> para teclado. Son los servicios mínimos para arrancar y cargar el sistema.</p>
+            </div>
+            <div class="card">
+              <h3>Cuando la toma el kernel</h3>
+              <p>DOS reemplaza o amplía entradas: <code>INT 21h</code> pasa a apuntar a sus servicios, <code>INT 20h</code> a la salida de programas y los drivers/TSR agregan sus rutinas. Las entradas de la BIOS pueden seguir disponibles.</p>
+            </div>
+          </div>
           <div class="int-widget">
             <div class="int-flow" id="intFlow" role="group" aria-label="Flujo de una llamada INT 21h">
               <button class="int-node" type="button" data-int="0" aria-pressed="true"><strong>Programa</strong><span>quiere crear un archivo</span></button>
@@ -1511,6 +1525,7 @@
           </div>
         </div>
         <aside class="notes">
+          <p>Enfatizar que la IVT es una tabla de punteros, no código. La BIOS la llena al arrancar; el kernel la reescribe para sus servicios y los drivers/TSR agregan entradas.</p>
           <p>Recorrer el flujo con un ejemplo concreto: guardar una partida. El programa no habla con los cables del disco; llama a INT 21h y el kernel hace el trabajo.</p>
           <p>En DOS no hay cambio de modo usuario a kernel: todo corre al mismo nivel. Por eso una interrupción de software es suficiente para exponer los servicios.</p>
         </aside>
