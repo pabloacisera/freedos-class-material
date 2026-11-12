@@ -1,4 +1,4 @@
-# FreeDOS · Material de clase
+# FreeDOS · Material didáctico
 
 Presentación estática sobre FreeDOS, con un resumen descargable en PDF.
 

@@ -34,6 +34,7 @@
     sidebar: $('#sidebar'),
     sidebarNav: $('#sidebarNav'),
     sidebarClose: $('#sidebarClose'),
+    sidebarCount: $('#sidebarCount'),
     backdrop: $('#backdrop'),
     menuBtn: $('#menuBtn'),
     overviewBtn: $('#overviewBtn'),
@@ -63,6 +64,7 @@
   };
 
   els.totalNum.textContent = total;
+  if (els.sidebarCount) els.sidebarCount.textContent = `${total} diapositivas`;
 
   function buildNavigation() {
     let lastSection = null;
@@ -430,13 +432,13 @@
     },
     {
       tag: 'Configuración',
-      title: 'CONFIG.SYS / FDCONFIG.SYS',
+      title: 'FDCONFIG.SYS',
       text: 'El kernel lee la configuración: parámetros de memoria, drivers de bajo nivel y la directiva SHELL. Cada driver se instala y actualiza las entradas correspondientes de la IVT.'
     },
     {
       tag: 'Shell',
-      title: 'COMMAND.COM + AUTOEXEC.BAT',
-      text: 'Se lanza el intérprete de comandos (FreeCOM). AUTOEXEC.BAT configura PATH, teclado y programas TSR; estos se enganchan en la IVT para activarse ante su interrupción.'
+      title: 'COMMAND.COM + FDAUTO.BAT',
+      text: 'Se lanza el intérprete de comandos (FreeCOM). FDAUTO.BAT configura PATH, teclado y programas TSR; estos se enganchan en la IVT para activarse ante su interrupción.'
     },
     {
       tag: 'Sistema listo',
@@ -717,6 +719,47 @@
     });
   }
 
+  function initToolTabs() {
+    const tabs = $$('.tool-btn');
+    const panels = {
+      dosbox: $('#panelDosbox'),
+      qemu: $('#panelQemu')
+    };
+    if (!tabs.length) return;
+
+    const order = tabs.map((tab) => tab.dataset.tool);
+    const select = (tool, moveFocus = false) => {
+      tabs.forEach((tab) => {
+        const active = tab.dataset.tool === tool;
+        tab.classList.toggle('is-active', active);
+        tab.setAttribute('aria-selected', String(active));
+        tab.tabIndex = active ? 0 : -1;
+        if (active && moveFocus) tab.focus();
+      });
+      Object.entries(panels).forEach(([key, panel]) => {
+        if (panel) panel.hidden = key !== tool;
+      });
+    };
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => select(tab.dataset.tool));
+      tab.addEventListener('keydown', (event) => {
+        const currentIndex = order.indexOf(tab.dataset.tool);
+        if (currentIndex < 0) return;
+        let nextIndex = null;
+        if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % order.length;
+        if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + order.length) % order.length;
+        if (event.key === 'Home') nextIndex = 0;
+        if (event.key === 'End') nextIndex = order.length - 1;
+        if (nextIndex === null) return;
+        event.preventDefault();
+        select(order[nextIndex], true);
+      });
+    });
+
+    select(order[0]);
+  }
+
   function initVirtualizationTabs() {
     const tabs = $$('.seg-btn');
     const panels = {
@@ -751,6 +794,7 @@
   initCalculator();
   initRegisterWidget();
   initBlockWidget();
+  initToolTabs();
   initVirtualizationTabs();
 
 })();

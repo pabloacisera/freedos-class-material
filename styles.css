@@ -220,6 +220,8 @@ kbd {
 .icon-btn:focus-visible,
 .btn:focus-visible,
 .agenda-item:focus-visible,
+.tool-btn:focus-visible,
+.practice-link:focus-visible,
 .flow-step:focus-visible,
 .mem-seg:focus-visible,
 .mem-chip:focus-visible,
@@ -931,6 +933,248 @@ td code {
   min-width: 420px;
 }
 
+/* Figures and technical images */
+
+.figure {
+  margin: 0;
+  padding: clamp(0.7rem, 1.5vw, 1rem);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+
+.figure.wide img {
+  max-height: 430px;
+  object-fit: contain;
+}
+
+.figure figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+/* Tool switch and practice panels */
+
+.tool-switch {
+  display: inline-flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  margin-bottom: 1rem;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.tool-btn {
+  min-height: 2.75rem;
+  padding: 0.55rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 750;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 9px;
+  transition: color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+
+.tool-btn:hover {
+  color: var(--ink);
+}
+
+.tool-btn.is-active {
+  color: #fff;
+  background: var(--accent);
+  box-shadow: 0 1px 3px rgba(16, 24, 29, 0.16);
+}
+
+.tool-panel[hidden] {
+  display: none;
+}
+
+.tool-panel:not([hidden]) {
+  animation: panel-in 0.22s ease;
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.practice-links {
+  display: grid;
+  gap: 0.45rem;
+  margin-top: 0.7rem;
+}
+
+.practice-link {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.1rem 0.6rem;
+  width: 100%;
+  min-height: 2.9rem;
+  padding: 0.6rem 0.65rem;
+  text-align: left;
+  color: var(--ink);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.practice-link:hover {
+  background: var(--surface);
+  border-color: var(--accent);
+}
+
+.practice-link .agenda-num {
+  align-self: center;
+}
+
+.practice-link strong {
+  display: block;
+  font-size: 0.88rem;
+  line-height: 1.25;
+}
+
+.practice-link small {
+  display: block;
+  font-size: 0.76rem;
+  line-height: 1.35;
+  color: var(--muted);
+}
+
+/* QEMU lab walkthrough */
+
+.lab-steps {
+  display: grid;
+  gap: clamp(0.8rem, 1.8vw, 1.2rem);
+}
+
+.lab-step {
+  display: grid;
+  gap: 0.7rem;
+  align-content: start;
+  padding: clamp(0.9rem, 2vw, 1.2rem);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.lab-step-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.lab-step-head h3 {
+  margin: 0;
+}
+
+.lab-num {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+  border-radius: 50%;
+}
+
+.lab-step p {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.lab-step p strong {
+  color: var(--ink);
+}
+
+.lab-step .code {
+  margin: 0;
+}
+
+.lab-step .figure {
+  box-shadow: none;
+  background: var(--surface-2);
+}
+
+.lab-step .btn {
+  justify-self: start;
+}
+
+/* Key memory addresses */
+
+.mem-addresses {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
+  margin-top: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+@media (min-width: 1000px) {
+  .mem-addresses {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.mem-addresses > div {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  padding: 0.5rem 0.65rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.mem-addresses code {
+  flex: none;
+  font-weight: 800;
+  color: var(--accent-strong);
+}
+
+.mem-addresses span {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* Spacing between new block types */
+
+.grid + .figure,
+.figure + .grid,
+.figure + .callout,
+.callout + .figure,
+.callout + .table-wrap,
+.table-wrap + .figure,
+.callout + .lab-steps,
+.lab-steps + .callout,
+.tool-switch + .tool-panel {
+  margin-top: clamp(1.25rem, 2.5vw, 2rem);
+}
+
 /* Timeline */
 
 .timeline {
@@ -1085,6 +1329,12 @@ td code {
   margin-bottom: 1rem;
 }
 
+@media (min-width: 760px) {
+  .layer-flow {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
 .layer {
   padding: 0.7rem 0.9rem;
   font-size: 0.9rem;
@@ -1112,6 +1362,17 @@ td code {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
+}
+
+@media (min-width: 1000px) {
+  .fat-explanation {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .fat-explanation figcaption {
+    grid-column: 1 / -1;
+  }
 }
 
 .fat-idea {
@@ -2344,7 +2605,7 @@ td code {
   }
 
   .mem-bar {
-    min-height: 190px;
+    min-height: 160px;
   }
 
   .code {
@@ -2466,6 +2727,108 @@ td code {
   th,
   td {
     padding: 0.18rem 0.42rem;
+  }
+}
+
+@media (max-width: 559px) {
+  .tool-switch {
+    display: flex;
+    width: 100%;
+  }
+
+  .tool-btn {
+    flex: 1;
+    padding-inline: 0.7rem;
+  }
+
+  .mem-addresses {
+    grid-template-columns: 1fr;
+  }
+
+  .figure.wide img {
+    max-height: 260px;
+  }
+
+  .lab-step {
+    padding: 0.85rem;
+  }
+
+  .lab-step-head {
+    align-items: flex-start;
+  }
+
+  .lab-step-head h3 {
+    font-size: 0.95rem;
+  }
+}
+
+@media (min-width: 900px) and (max-height: 940px) {
+  .grid + .figure,
+  .figure + .grid,
+  .figure + .callout,
+  .callout + .figure,
+  .callout + .table-wrap,
+  .table-wrap + .figure,
+  .callout + .lab-steps,
+  .lab-steps + .callout,
+  .tool-switch + .tool-panel {
+    margin-top: 0.7rem;
+  }
+
+  .figure {
+    padding: 0.65rem;
+  }
+
+  .figure.wide img {
+    max-height: 330px;
+  }
+
+  .lab-step {
+    gap: 0.55rem;
+    padding: 0.8rem 0.9rem;
+  }
+
+  .lab-step p {
+    font-size: 0.84rem;
+  }
+
+  .mem-addresses {
+    margin-top: 0.7rem;
+  }
+
+  .tool-switch {
+    margin-bottom: 0.7rem;
+  }
+}
+
+@media (min-width: 900px) and (max-height: 820px) {
+  .grid + .figure,
+  .figure + .grid,
+  .figure + .callout,
+  .callout + .figure,
+  .callout + .table-wrap,
+  .table-wrap + .figure,
+  .callout + .lab-steps,
+  .lab-steps + .callout,
+  .tool-switch + .tool-panel {
+    margin-top: 0.5rem;
+  }
+
+  .figure.wide img {
+    max-height: 280px;
+  }
+
+  .lab-step {
+    gap: 0.45rem;
+    padding: 0.7rem 0.8rem;
+  }
+
+  .lab-step p {
+    font-size: 0.8rem;
+  }
+
+  .mem-addresses {
+    margin-top: 0.5rem;
   }
 }
 

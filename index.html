@@ -7,8 +7,8 @@
   <meta name="color-scheme" content="light">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; form-action 'none'; upgrade-insecure-requests">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <title>FreeDOS · Material de clase</title>
-  <meta name="description" content="Recorrido técnico por FreeDOS: historia, sistemas de archivos, arranque, kernel, arquitectura x86 y prácticas en DOSBox-X.">
+  <title>FreeDOS · Material didáctico</title>
+  <meta name="description" content="Material didáctico de FreeDOS: historia, almacenamiento, arranque, kernel, memoria, controladores, arquitectura x86 y prácticas guiadas con DOSBox-X y QEMU.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -22,7 +22,7 @@
       </button>
       <div class="brand">
         <strong>FreeDOS</strong>
-        <span>Material de clase</span>
+        <span>Material didáctico</span>
       </div>
       <div class="topbar-section" id="currentSection">Inicio</div>
       <div class="topbar-actions">
@@ -47,7 +47,7 @@
       <div class="sidebar-head">
         <div>
           <strong>Índice</strong>
-          <span>31 diapositivas</span>
+          <span id="sidebarCount">41 diapositivas</span>
         </div>
         <button class="icon-btn" id="sidebarClose" type="button" aria-label="Cerrar índice">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -68,7 +68,7 @@
           <div class="cover-copy">
             <p class="kicker">Tecnicatura · Sistemas operativos</p>
             <h1>FreeDOS</h1>
-            <p class="lead">Arquitectura x86, almacenamiento, arranque, interrupciones y prácticas en DOSBox-X.</p>
+            <p class="lead">Arranque, procesador y kernel, discos, memoria, controladores y prácticas guiadas con DOSBox-X y QEMU.</p>
             <div class="specs" aria-label="Características principales">
               <span>8086 / 8088</span>
               <span>16 bits</span>
@@ -104,19 +104,18 @@
           </div>
         </div>
         <aside class="notes">
-          <p>Presentar el alcance: un recorrido técnico, no una introducción motivacional. La clase termina con cuatro prácticas sobre DOSBox-X.</p>
+          <p>Presentar el alcance: un recorrido técnico, no una introducción motivacional. La clase termina con un hub de prácticas que permite elegir DOSBox-X o QEMU.</p>
           <p>Aclarar desde el inicio que FreeDOS se estudia como sistema de 16 bits en modo real; varias limitaciones actuales se explican por esa base.</p>
         </aside>
       </section>
-
-      <section class="slide" id="recorrido" data-title="Recorrido de la clase" data-section="Inicio" aria-hidden="true">
+      <section class="slide" id="recorrido" data-title="Temario" data-section="Inicio" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
             <div>
               <p class="kicker">Inicio</p>
-              <h1>Recorrido de la clase</h1>
+              <h1>Temario</h1>
             </div>
-            <span class="slide-tag">Agenda</span>
+            <span class="slide-tag">Recorrido</span>
           </header>
           <div class="agenda">
             <button class="agenda-item" type="button" data-goto="historia">
@@ -124,49 +123,58 @@
               <strong>Historia y propósito</strong>
               <small>DOS, MS-DOS y el origen de FreeDOS</small>
             </button>
-            <button class="agenda-item" type="button" data-goto="filesystem">
-              <span class="agenda-num">02</span>
-              <strong>Disco y archivos</strong>
-              <small>FAT, NTFS y EXT</small>
-            </button>
             <button class="agenda-item" type="button" data-goto="arranque">
-              <span class="agenda-num">03</span>
+              <span class="agenda-num">02</span>
               <strong>Arranque y firmware</strong>
-              <small>BIOS/UEFI, kernel y shell</small>
+              <small>BIOS/UEFI, POST, MBR/VBR, kernel y shell</small>
             </button>
-            <button class="agenda-item" type="button" data-goto="kernel">
+            <button class="agenda-item" type="button" data-goto="procesador">
+              <span class="agenda-num">03</span>
+              <strong>Procesador y kernel</strong>
+              <small>CPU, registros, modo real y servicios del núcleo</small>
+            </button>
+            <button class="agenda-item" type="button" data-goto="disco-bloques">
               <span class="agenda-num">04</span>
-              <strong>Kernel y ejecución</strong>
-              <small>Componentes y modelo de procesos</small>
+              <strong>Disco y archivos</strong>
+              <small>Sectores, clústeres, FAT, NTFS y EXT</small>
             </button>
-            <button class="agenda-item" type="button" data-goto="modo-real">
+            <button class="agenda-item" type="button" data-goto="memoria">
               <span class="agenda-num">05</span>
-              <strong>Arquitectura x86</strong>
-              <small>Memoria, segmentos, registros e interrupciones</small>
+              <strong>Memoria e interrupciones</strong>
+              <small>Mapa de 1 MB, MCB, TSR e INT 21h</small>
+            </button>
+            <button class="agenda-item" type="button" data-goto="drivers">
+              <span class="agenda-num">06</span>
+              <strong>Controladores</strong>
+              <small>Drivers de carácter y bloque, cadena e IVT</small>
+            </button>
+            <button class="agenda-item" type="button" data-goto="ejemplo-integrado">
+              <span class="agenda-num">07</span>
+              <strong>Ejemplo integrado</strong>
+              <small>Qué pasa cuando copiás un archivo</small>
             </button>
             <button class="agenda-item" type="button" data-goto="vigencia">
-              <span class="agenda-num">06</span>
+              <span class="agenda-num">08</span>
               <strong>Vigencia</strong>
               <small>Casos de uso, límites y conclusiones</small>
             </button>
             <button class="agenda-item" type="button" data-goto="virtualizacion">
-              <span class="agenda-num">07</span>
+              <span class="agenda-num">09</span>
               <strong>Virtualización y emulación</strong>
-              <small>Diferencias y cuándo usar cada una</small>
+              <small>DOSBox-X, QEMU y cuándo usar cada uno</small>
             </button>
-            <button class="agenda-item" type="button" data-goto="practica-dosbox">
-              <span class="agenda-num">08</span>
+            <button class="agenda-item" type="button" data-goto="practicas">
+              <span class="agenda-num">10</span>
               <strong>Prácticas</strong>
-              <small>DOSBox-X, DEBUG, NASM y OpenGEM</small>
+              <small>Elegir DOSBox-X o QEMU y ejecutar</small>
             </button>
           </div>
         </div>
         <aside class="notes">
-          <p>El orden sigue una progresión: contexto, almacenamiento, arranque, componentes, arquitectura y prácticas. Las prácticas quedan al final para no interrumpir los conceptos.</p>
-          <p>El material original salta del tema 5 al 7; acá se renumera el recorrido y se conserva el contenido técnico.</p>
+          <p>El orden sigue una progresión: contexto, arranque, procesador y kernel, discos, memoria, controladores, integración y prácticas. Las prácticas quedan al final para no interrumpir los conceptos.</p>
+          <p>La diapositiva de ejemplo integrado funciona como cierre técnico: vuelve a unir shell, kernel, IVT, FAT, memoria y video en una sola operación cotidiana.</p>
         </aside>
       </section>
-
       <section class="slide" id="historia" data-title="De DOS a FreeDOS" data-section="Historia" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
@@ -236,7 +244,6 @@
           <p>Matiz importante: Windows 95 fue un sistema híbrido 16/32 bits y siguió arrancando sobre DOS (IO.SYS/COMMAND.COM). Lo que cambió fue la integración de la GUI, no la desaparición de DOS.</p>
         </aside>
       </section>
-
       <section class="slide" id="que-es-dos" data-title="¿Qué es DOS?" data-section="Historia" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
@@ -274,7 +281,6 @@
           <p>La suma 640 KB + 384 KB = 1 MB. Los 384 KB superiores no son RAM libre continua: incluyen video, BIOS y ROM de adaptadores.</p>
         </aside>
       </section>
-
       <section class="slide" id="msdos-windows" data-title="MS-DOS y Windows 95" data-section="Historia" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
@@ -316,7 +322,6 @@
           <p>Este matiz explica por qué FreeDOS todavía tiene sentido: la base instalada de software DOS no desapareció con Windows 95.</p>
         </aside>
       </section>
-
       <section class="slide" id="freedos-origen" data-title="FreeDOS: origen y propósito" data-section="Historia" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
@@ -355,7 +360,6 @@
           <p>La comunidad y la compatibilidad binaria son el criterio central del proyecto, por encima de agregar funcionalidades modernas.</p>
         </aside>
       </section>
-
       <section class="slide" id="usos" data-title="¿Para qué se usa hoy?" data-section="Historia" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
@@ -408,181 +412,6 @@
           <p>El uso educativo es el que interesa acá: el sistema es lo bastante pequeño como para seguir el recorrido completo de una instrucción.</p>
         </aside>
       </section>
-
-      <section class="slide" id="filesystem" data-title="Disco, archivos y sistemas de archivos" data-section="Archivos" aria-hidden="true">
-        <div class="slide-inner">
-          <header class="slide-head">
-            <div>
-              <p class="kicker">Archivos</p>
-              <h1>Disco, archivos y sistemas de archivos</h1>
-            </div>
-            <span class="slide-tag">Conceptos</span>
-          </header>
-          <p class="lead">El disco es almacenamiento bruto. El sistema de archivos aporta el índice y las reglas necesarias para interpretarlo.</p>
-          <div class="flow-horizontal" aria-label="Relación entre disco, índice y reglas">
-            <div class="flow-box"><strong>Bloques de disco</strong><span>Bytes sin estructura</span></div>
-            <span class="flow-arrow" aria-hidden="true">→</span>
-            <div class="flow-box accent"><strong>Índice</strong><span>Ubica cada archivo</span></div>
-            <span class="flow-arrow" aria-hidden="true">→</span>
-            <div class="flow-box"><strong>Reglas</strong><span>Nombre, ubicación, seguridad</span></div>
-          </div>
-          <div class="grid three">
-            <div class="card">
-              <h3>Sin filesystem</h3>
-              <p>El sistema no sabe dónde empieza ni dónde termina un archivo. Solo ve sectores y bytes.</p>
-            </div>
-            <div class="card">
-              <h3>Para el procesador</h3>
-              <p>Un archivo es solamente una secuencia de bytes. La estructura la aporta el sistema de archivos.</p>
-            </div>
-            <div class="card">
-              <h3>Tres elementos</h3>
-              <ul>
-                <li><strong>Nombre</strong> de archivo o directorio.</li>
-                <li><strong>Ubicación</strong>: segmento o clúster.</li>
-                <li><strong>Seguridad</strong>: permisos y estado.</li>
-              </ul>
-            </div>
-          </div>
-          <div class="callout">
-            <p><strong>Idea central:</strong> un file system es un índice más un conjunto de reglas de organización. Sin esas reglas, el hardware no puede reconstruir un archivo.</p>
-          </div>
-        </div>
-        <aside class="notes">
-          <p>Separar almacenamiento físico de organización lógica. El disco no “sabe” qué es un archivo; el sistema de archivos construye esa interpretación.</p>
-          <p>Adelantar que FAT usa una tabla como índice y que NTFS/EXT agregan journaling y permisos.</p>
-        </aside>
-      </section>
-
-      <section class="slide" id="fat" data-title="FAT: la tabla como índice" data-section="Archivos" aria-hidden="true">
-        <div class="slide-inner">
-          <header class="slide-head">
-            <div>
-              <p class="kicker">Archivos</p>
-              <h1>FAT: la tabla como índice</h1>
-            </div>
-            <span class="slide-tag">File Allocation Table</span>
-          </header>
-          <p class="lead">Un archivo no siempre ocupa bloques consecutivos. El directorio indica dónde comenzar y FAT señala qué bloque sigue.</p>
-          <figure class="fat-explanation" aria-labelledby="fat-caption">
-            <div class="fat-idea">
-              <p><strong>La idea:</strong> <code>ARCHIVO.DAT</code> está guardado en cuatro bloques separados. FAT indica el orden para leerlos como un único archivo.</p>
-            </div>
-            <div class="fat-map">
-              <section class="fat-directory" aria-labelledby="fat-directory-title">
-                <p class="fat-label" id="fat-directory-title">1. Directorio</p>
-                <p>El directorio guarda el nombre del archivo y dónde empieza.</p>
-                <p class="fat-start"><code>ARCHIVO.DAT</code><span>empieza en el clúster <strong>2</strong></span></p>
-              </section>
-              <section class="fat-table" aria-labelledby="fat-table-title">
-                <p class="fat-label" id="fat-table-title">2. Tabla FAT</p>
-                <p>FAT responde: “si estás aquí, seguí por este clúster”.</p>
-                <dl>
-                  <div><dt>2</dt><dd>seguir por <strong>5</strong></dd></div>
-                  <div><dt>5</dt><dd>seguir por <strong>9</strong></dd></div>
-                  <div><dt>9</dt><dd>seguir por <strong>12</strong></dd></div>
-                  <div><dt>12</dt><dd><strong>fin del archivo</strong></dd></div>
-                </dl>
-              </section>
-            </div>
-            <section class="fat-disk" aria-labelledby="fat-disk-title">
-              <p class="fat-label" id="fat-disk-title">3. Disco</p>
-              <p>Las partes del archivo están mezcladas con otros datos:</p>
-              <div class="fat-disk-grid" aria-label="Bloques del disco; las partes A, B, C y D forman ARCHIVO.DAT">
-                <span>1</span><span class="is-file"><small>2</small>A</span><span>3</span><span>4</span>
-                <span class="is-file"><small>5</small>B</span><span>6</span><span>7</span><span>8</span>
-                <span class="is-file"><small>9</small>C</span><span>10</span><span>11</span><span class="is-file"><small>12</small>D</span>
-              </div>
-              <p class="fat-result">FAT permite reconstruir <code>ARCHIVO.DAT</code> como <strong>A → B → C → D</strong>, aunque sus partes no estén juntas.</p>
-            </section>
-            <figcaption id="fat-caption">FAT no guarda el archivo: guarda las indicaciones para encontrar cada parte.</figcaption>
-          </figure>
-          <div class="grid two">
-            <div class="table-wrap">
-              <table>
-                <caption class="sr-only">Comparación de variantes FAT</caption>
-                <thead>
-                  <tr><th>Variante</th><th>Direcciones</th><th>Archivo máx.</th><th>Uso típico</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td>FAT16</td><td>16 bits</td><td>2 GB</td><td>Volúmenes pequeños y arranque heredado</td></tr>
-                  <tr><td>FAT32</td><td>28 bits efectivos</td><td>4 GB</td><td>USB, tarjetas SD, discos portátiles</td></tr>
-                  <tr><td>ExFAT</td><td>64 bits</td><td>Muy grande</td><td>Extraíbles de gran capacidad</td></tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="stack">
-              <div class="card">
-                <h3>Cómo se lee</h3>
-                <p>La entrada de directorio guarda el nombre, el primer clúster y los atributos. La tabla FAT encadena los clústeres restantes mediante punteros.</p>
-              </div>
-              <div class="callout warn">
-                <p><strong>Precisión:</strong> FAT16/FAT32 no usan “sectores de 16/32 bits”. Lo que cambia es el tamaño de las direcciones de clúster: 16 bits en FAT16 y 28 bits efectivos en FAT32.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <aside class="notes">
-          <p>Mostrar primero las cuatro partes separadas en el disco. Recién después vincular el directorio con el inicio en 2 y la tabla FAT con los saltos 2 → 5 → 9 → 12 → EOF.</p>
-          <p>FAT32 tiene un máximo de 4 GB por archivo y volúmenes de hasta 2 TB en implementaciones habituales; no un máximo de 16 GB. Se usa en unidades de más de 16 GB sin problema.</p>
-        </aside>
-      </section>
-
-      <section class="slide" id="ntfs-ext" data-title="NTFS y EXT" data-section="Archivos" aria-hidden="true">
-        <div class="slide-inner">
-          <header class="slide-head">
-            <div>
-              <p class="kicker">Archivos</p>
-              <h1>NTFS y EXT: sistemas con journaling</h1>
-            </div>
-            <span class="slide-tag">Sistemas modernos</span>
-          </header>
-          <div class="grid two">
-            <div class="card">
-              <h3>NTFS</h3>
-              <ul>
-                <li>Desarrollado por Microsoft a mediados de los 90.</li>
-                <li>Journaling: registra cambios antes de aplicarlos.</li>
-                <li>ACL/ACE: sujeto, permiso y tipo (permite/niega).</li>
-                <li>EFS: cifrado de archivos y directorios.</li>
-                <li>Compresión y soporte para volúmenes y archivos grandes.</li>
-              </ul>
-            </div>
-            <div class="card">
-              <h3>EXT</h3>
-              <ul>
-                <li>Estándar de Linux y Unix.</li>
-                <li>EXT1/EXT2: rápido y robusto, sin journaling.</li>
-                <li>EXT3: incorpora journaling.</li>
-                <li>EXT4: estándar actual; volúmenes de hasta 1 EiB y archivos de hasta 16 TiB.</li>
-              </ul>
-            </div>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <caption class="sr-only">Comparación entre FAT32, NTFS y EXT4</caption>
-              <thead>
-                <tr><th>Característica</th><th>FAT32</th><th>NTFS</th><th>EXT4</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Journaling</td><td>No</td><td>Sí</td><td>Sí</td></tr>
-                <tr><td>Permisos</td><td>No</td><td>ACL</td><td>Permisos POSIX</td></tr>
-                <tr><td>Cifrado</td><td>No</td><td>EFS</td><td>fscrypt (opcional)</td></tr>
-                <tr><td>Archivo máximo</td><td>4 GB</td><td>16 TB práctico</td><td>16 TiB</td></tr>
-                <tr><td>Uso principal</td><td>Extraíbles</td><td>Windows</td><td>Linux</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="callout">
-            <p><strong>Journaling:</strong> el sistema anota el cambio en un registro antes de ejecutarlo. Si hay un corte, puede recuperar un estado consistente. <strong>EFS</strong> es cifrado; la compresión es una función separada de NTFS.</p>
-          </div>
-        </div>
-        <aside class="notes">
-          <p>Corrección respecto del original: EFS no es compresión, es cifrado. NTFS también ofrece compresión, pero es otra función.</p>
-          <p>Evitar dar cifras absolutas sin contexto: los máximos dependen de la implementación y del tamaño de clúster. Para la clase alcanza con distinguir FAT (simple, sin journaling) de NTFS/EXT (journaling y permisos).</p>
-        </aside>
-      </section>
-
       <section class="slide" id="arranque" data-title="Secuencia de arranque" data-section="Arranque" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
@@ -609,11 +438,11 @@
               </button>
               <button class="flow-step" type="button" data-step="3" aria-pressed="false">
                 <span class="flow-num">4</span>
-                <span><strong>CONFIG.SYS</strong><small>Memoria y drivers</small></span>
+                <span><strong>FDCONFIG.SYS</strong><small>Memoria y drivers</small></span>
               </button>
               <button class="flow-step" type="button" data-step="4" aria-pressed="false">
                 <span class="flow-num">5</span>
-                <span><strong>COMMAND.COM</strong><small>Shell + AUTOEXEC.BAT</small></span>
+                <span><strong>COMMAND.COM</strong><small>Shell + FDAUTO.BAT</small></span>
               </button>
               <button class="flow-step" type="button" data-step="5" aria-pressed="false">
                 <span class="flow-num">6</span>
@@ -638,113 +467,294 @@
           <p>La BIOS llena la IVT con servicios básicos; el kernel la reemplaza y amplía; los drivers y TSR agregan entradas. Al final, el prompt es la interfaz de la shell.</p>
         </aside>
       </section>
-
-      <section class="slide" id="arranque-1" data-title="Arranque: firmware, sector y kernel" data-section="Arranque" aria-hidden="true">
+      <section class="slide" id="post-cmos" data-title="Antes del primer sector: BIOS y POST" data-section="Arranque" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
             <div>
               <p class="kicker">Arranque</p>
-              <h1>Firmware, sector y kernel</h1>
+              <h1>Antes del primer sector: BIOS y POST</h1>
             </div>
-            <span class="slide-tag">Etapas 1–3</span>
+            <span class="slide-tag">Firmware</span>
           </header>
+          <p class="lead">El arranque es una cadena de eslabones: cada etapa solo sirve para habilitar la siguiente. El primero de todos es el firmware de la placa base.</p>
           <div class="grid three">
-            <div class="card step-card">
-              <span class="step-num">1</span>
-              <h3>BIOS / UEFI</h3>
+            <div class="card">
+              <h3>BIOS</h3>
+              <p>Programa embebido que controla el hardware básico. Está guardado en un chip <strong>ROM o flash</strong>, no volátil. La evolución de la BIOS se llama <strong>UEFI</strong>.</p>
+            </div>
+            <div class="card">
+              <h3>CMOS</h3>
+              <p>Memoria de configuración de la placa: fecha y hora, perfil de energía, activación o desactivación de componentes. Se carga al iniciar y condiciona el POST.</p>
+            </div>
+            <div class="card">
+              <h3>POST</h3>
+              <p><em>Power-On Self-Test</em>: la rutina de verificación inicial. Comprueba que exista memoria y que los dispositivos respondan antes de buscar un sistema operativo.</p>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Los tres trabajos del POST</h3>
+            <ol class="steps">
+              <li><strong>Verificar la memoria:</strong> sin RAM el procesador no puede escribir ni leer el programa de arranque.</li>
+              <li><strong>Crear la tabla de interrupciones:</strong> la IVT ocupa los primeros 1 KB de RAM y tiene 256 entradas de 4 bytes con rutinas básicas de pantalla, teclado y disco.</li>
+              <li><strong>Comprobar dispositivos:</strong> mouse, teclado, CPU, RAM y video. Si algo esencial falla, el arranque se detiene o emite un aviso.</li>
+            </ol>
+          </div>
+          <div class="callout">
+            <p><strong>Hilo conductor:</strong> la IVT que crea el POST no es la definitiva. El kernel la reemplaza y amplía; los drivers y TSR agregan entradas. Por eso la misma tabla aparece en casi todo el recorrido.</p>
+          </div>
+          <div class="callout warn">
+            <p><strong>No confundir:</strong> BIOS es el firmware que ejecuta el arranque; CMOS es la memoria que guarda su configuración. Son piezas distintas que trabajan juntas.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Usar la analogía del vehículo: la primera marcha no es el viaje, pero sin ella no se mueve. La BIOS no “ejecuta” FreeDOS: prepara el hardware y cede el control.</p>
+          <p>La fecha y hora de la CMOS es la razón por la que el sistema puede sellar los archivos con fecha incluso antes de que el kernel tenga su propio reloj.</p>
+        </aside>
+      </section>
+      <section class="slide" id="mbr-gpt" data-title="MBR, GPT y VBR: dónde vive el bootloader" data-section="Arranque" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Arranque</p>
+              <h1>MBR, GPT y VBR: dónde vive el bootloader</h1>
+            </div>
+            <span class="slide-tag">Sector 0</span>
+          </header>
+          <p class="lead">La BIOS ya verificó el hardware. Ahora busca el dispositivo de arranque y lee su primer sector con <code>INT 13h</code>. Ahí empieza una de dos historias: MBR o GPT.</p>
+          <div class="grid two">
+            <div class="card">
+              <h3>MBR · Master Boot Record</h3>
               <ul>
-                <li>POST: verificación de RAM, CPU y dispositivos.</li>
-                <li>IVT en los primeros 1 KB de RAM: <code>00000h–003FFh</code>.</li>
-                <li>Servicios básicos de pantalla, teclado y disco.</li>
+                <li>Ocupa los <strong>512 bytes</strong> iniciales del disco.</li>
+                <li>Contiene código de arranque y la tabla de particiones.</li>
+                <li>La BIOS lo lee y ejecuta para encontrar la partición activa.</li>
+                <li>Es el esquema tradicional de los sistemas BIOS.</li>
               </ul>
             </div>
-            <div class="card step-card">
-              <span class="step-num">2</span>
-              <h3>MBR / VBR</h3>
+            <div class="card">
+              <h3>GPT · GUID Partition Table</h3>
               <ul>
-                <li>La BIOS lee el sector de arranque con <code>INT 13h</code>.</li>
-                <li>El MBR o VBR contiene el código que busca el sistema.</li>
-                <li>FreeDOS usa su propio sector de arranque; también puede intervenir un gestor como GRUB.</li>
+                <li>Tabla de particiones con identificadores GUID.</li>
+                <li>Es el esquema habitual de los sistemas UEFI.</li>
+                <li>UEFI la lee y busca el bootloader en una partición EFI.</li>
+                <li>Convive con discos grandes y muchas particiones.</li>
               </ul>
             </div>
-            <div class="card step-card">
-              <span class="step-num">3</span>
-              <h3>KERNEL.SYS</h3>
+          </div>
+          <div class="card">
+            <h3>VBR · Volume Boot Record</h3>
+            <p>El MBR revisa qué partición está activa y lee su primer sector: el VBR. Ese mini-programa entiende el sistema de archivos de esa partición gracias a los parámetros guardados en su boot sector. Su objetivo final es encontrar y cargar el <strong>KERNEL.SYS</strong>.</p>
+          </div>
+          <div class="callout">
+            <p><strong>Reparto de tareas:</strong> el MBR elige la partición; el VBR arranca el sistema de archivos de esa partición. Son dos sectores distintos, con dos responsabilidades distintas.</p>
+          </div>
+          <div class="callout warn">
+            <p><strong>Precisión:</strong> MBR no es el sistema de archivos. Es una tabla de particiones más un pequeño código de arranque. La FAT y los archivos viven dentro de la partición, no en el MBR.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Recalcar la cadena: BIOS → MBR → tabla de particiones → partición activa → VBR → kernel. Cada flecha es un salto de control, no una simple lectura.</p>
+          <p>En la práctica con QEMU se ve el caso BIOS + MBR: por eso se usa <code>fdisk</code> y luego <code>format c:</code>. GPT aparece cuando el equipo arranca con UEFI.</p>
+        </aside>
+      </section>
+      <section class="slide" id="memoria-arranque" data-title="Arranque: kernel, configuración y shell" data-section="Arranque" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Arranque</p>
+              <h1>Arranque: kernel, configuración y shell</h1>
+            </div>
+            <span class="slide-tag">Etapas 3–6</span>
+          </header>
+          <p class="lead">El VBR cargó <code>KERNEL.SYS</code>: el kernel se copia a RAM, reemplaza las rutinas de la BIOS y actualiza la IVT. Después lee la configuración, carga drivers y cede el control a la shell.</p>
+          <div class="grid three">
+            <div class="card compact"><p><strong>1. KERNEL.SYS:</strong> se copia a RAM, reemplaza funciones de la BIOS y actualiza la IVT con los servicios del sistema.</p></div>
+            <div class="card compact"><p><strong>2. FDCONFIG.SYS:</strong> carga drivers y el administrador de memoria; acá se elige entre JEMM386 y JEMMEX.</p></div>
+            <div class="card compact"><p><strong>3. COMMAND.COM:</strong> ejecuta <code>FDAUTO.BAT</code> y muestra <code>C:\&gt;</code>; el sistema queda listo para recibir órdenes.</p></div>
+          </div>
+          <div class="grid two">
+            <div class="card">
+              <h3>JEMM386 · el clásico</h3>
               <ul>
-                <li>El kernel se copia a RAM y toma el control.</li>
-                <li>Reemplaza funciones de la BIOS por rutinas propias.</li>
-                <li>Actualiza la IVT con los servicios del sistema operativo.</li>
+                <li>Administra la memoria superior (<em>upper</em>).</li>
+                <li>Por defecto desactiva EMS, la memoria expandida.</li>
+                <li>Puede acceder a memoria extendida mediante otro controlador como <code>HIMEMX</code>.</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>JEMMEX · dos en uno</h3>
+              <ul>
+                <li>Reúne en un solo archivo el acceso a la memoria extendida: los 32 MB completos.</li>
+                <li>Administra la memoria superior (<em>upper</em>) y la extendida.</li>
+                <li>Conserva compatibilidad con juegos viejos que esperan EMS o XMS.</li>
               </ul>
             </div>
           </div>
           <div class="callout">
-            <p><strong>IVT:</strong> tabla de 256 entradas de 4 bytes. Cada entrada contiene un segmento y un desplazamiento; el procesador la consulta cuando se ejecuta una interrupción.</p>
+            <p><strong>Por qué se elige:</strong> no es una preferencia cosmética. Un administrador de memoria distinto mueve drivers, TSR y buffers a zonas distintas, y eso decide si un programa grande entra o no en los 640 KB convencionales.</p>
+          </div>
+          <div class="callout warn">
+            <p><strong>Nombres que conviene fijar:</strong> <code>FDCONFIG.SYS</code> cumple el rol de <code>CONFIG.SYS</code> y <code>FDAUTO.BAT</code> cumple el rol de <code>AUTOEXEC.BAT</code>. Son los nombres propios de FreeDOS.</p>
           </div>
         </div>
         <aside class="notes">
-          <p>La IVT ocupa exactamente 1 KB: 256 entradas × 4 bytes. Es una tabla de despacho, no un planificador de procesos.</p>
-          <p>En la etapa 3 el kernel no “hereda” una IVT inmutable: la modifica para exponer sus propios servicios, especialmente INT 21h.</p>
+          <p>No hace falta memorizar cada directiva. Lo importante es que el alumno vea que la configuración del arranque es una decisión de ingeniería: dónde vive cada driver y cuánta memoria queda para la aplicación.</p>
+          <p>Relacionar con el mapa de memoria de la sección siguiente: UMB, XMS y EMS son justamente las zonas que estos administradores organizan.</p>
         </aside>
       </section>
-
-      <section class="slide" id="arranque-2" data-title="Arranque: configuración y shell" data-section="Arranque" aria-hidden="true">
+      <section class="slide" id="procesador" data-title="Procesador de 16 bits: ciclos y registros" data-section="Procesador" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
             <div>
-              <p class="kicker">Arranque</p>
-              <h1>Configuración y shell</h1>
+              <p class="kicker">Procesador</p>
+              <h1>Procesador de 16 bits: ciclos y registros</h1>
             </div>
-            <span class="slide-tag">Etapas 4–6</span>
+            <span class="slide-tag">CPU</span>
           </header>
-          <div class="grid three">
-            <div class="card step-card">
-              <span class="step-num">4</span>
-              <h3>CONFIG.SYS / FDCONFIG.SYS</h3>
-              <ul>
-                <li>El kernel lee parámetros de memoria.</li>
-                <li>Carga drivers de bajo nivel.</li>
-                <li>Define la directiva <code>SHELL</code>.</li>
-                <li>Cada driver actualiza la IVT.</li>
-              </ul>
+          <p class="lead">En FreeDOS la arquitectura es de 16 bits: los registros y las operaciones manejan hasta 16 bits por vez. Esa “mano” condiciona los buses y la forma de direccionar la memoria.</p>
+          <div class="grid two">
+            <div class="card">
+              <h3>Ciclo y reloj</h3>
+              <p>Los ciclos se ejecutan con un oscilador de cristal de cuarzo integrado en la placa base. Cada pulso obliga al procesador a reaccionar; el tiempo entre pulso y pulso es un ciclo. La unidad de medida es el <strong>hertz</strong>.</p>
+              <p class="small">3,5 GHz equivalen a 0,29 nanosegundos. Para un procesador, 1 milisegundo es una eternidad.</p>
             </div>
-            <div class="card step-card">
-              <span class="step-num">5</span>
-              <h3>COMMAND.COM / FreeCOM</h3>
-              <ul>
-                <li>Intérprete de comandos interactivo.</li>
-                <li>Procesa <code>AUTOEXEC.BAT</code>.</li>
-                <li>Configura <code>PATH</code>, teclado y TSR.</li>
-              </ul>
-            </div>
-            <div class="card step-card">
-              <span class="step-num">6</span>
-              <h3>Prompt <code>C:\&gt;</code></h3>
-              <ul>
-                <li>El sistema queda a la espera de órdenes.</li>
-                <li>El kernel coordina las llamadas por la IVT final.</li>
-                <li>Los TSR permanecen residentes y pasivos.</li>
-              </ul>
+            <div class="card">
+              <h3>Buses</h3>
+              <p>El <strong>bus de datos</strong> transporta la información que se mueve en cada ciclo. El <strong>bus de direcciones</strong> indica en qué lugar de la memoria se lee o escribe.</p>
+              <p class="small">El 8086 tiene un bus de datos de 16 bits; el 8088, de 8 bits. Ambos comparten un bus de direcciones de 20 bits.</p>
             </div>
           </div>
-          <div class="table-wrap">
-            <table>
-              <caption class="sr-only">Archivos del arranque de FreeDOS</caption>
-              <thead><tr><th>Archivo</th><th>Función</th></tr></thead>
-              <tbody>
-                <tr><td><code>KERNEL.SYS</code></td><td>Núcleo del sistema; servicios y gestión de memoria/procesos.</td></tr>
-                <tr><td><code>CONFIG.SYS</code></td><td>Configuración de memoria y drivers de bajo nivel.</td></tr>
-                <tr><td><code>COMMAND.COM</code></td><td>Intérprete de comandos (FreeCOM).</td></tr>
-                <tr><td><code>AUTOEXEC.BAT</code></td><td>Variables de entorno, teclado y programas TSR.</td></tr>
-              </tbody>
-            </table>
+          <div class="card">
+            <h3>Los registros son cajas internas</h3>
+            <p>El procesador guarda allí la información que usará de inmediato. En la próxima diapositiva se detalla cada familia y qué papel cumple en una instrucción.</p>
+          </div>
+          <div class="callout warn">
+            <p><strong>No confundir:</strong> 16 bits describe el ancho de los registros y del bus de datos. El bus de direcciones tiene 20 bits, y por eso el procesador puede llegar a 1 MB.</p>
           </div>
         </div>
         <aside class="notes">
-          <p>Si aparece la duda: COMMAND.COM es el nombre histórico del intérprete; en FreeDOS el proyecto se llama FreeCOM y es compatible.</p>
-          <p>Los TSR se cargan en AUTOEXEC.BAT y quedan enganchados en la IVT. No se ejecutan en paralelo: reaccionan a una interrupción.</p>
+          <p>La analogía de la “mano” sirve: el procesador puede tomar hasta 16 bits por vez, aunque necesite señalar direcciones más grandes. El segmento es el truco para estirar esa mano.</p>
+          <p>No hace falta profundizar en frecuencias: alcanza con que se entienda que el ciclo es la unidad de tiempo del procesador y que el reloj marca su ritmo.</p>
         </aside>
       </section>
-
+      <section class="slide" id="registros" data-title="Registros x86 de 16 bits" data-section="Procesador" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Procesador</p>
+              <h1>Registros x86 de 16 bits</h1>
+            </div>
+            <span class="slide-tag">CPU</span>
+          </header>
+          <p class="lead">Los registros son almacenamientos ultra rápidos dentro del procesador. Los de propósito general miden 16 bits y pueden dividirse en dos mitades de 8 bits.</p>
+          <div class="reg-widget">
+            <div class="reg-grid" role="group" aria-label="Registros del procesador">
+              <button class="reg" type="button" data-reg="AX" aria-pressed="true">
+                <span class="reg-name">AX</span>
+                <span class="reg-halves"><span>AH</span><span>AL</span></span>
+              </button>
+              <button class="reg" type="button" data-reg="BX" aria-pressed="false">
+                <span class="reg-name">BX</span>
+                <span class="reg-halves"><span>BH</span><span>BL</span></span>
+              </button>
+              <button class="reg" type="button" data-reg="CX" aria-pressed="false">
+                <span class="reg-name">CX</span>
+                <span class="reg-halves"><span>CH</span><span>CL</span></span>
+              </button>
+              <button class="reg" type="button" data-reg="DX" aria-pressed="false">
+                <span class="reg-name">DX</span>
+                <span class="reg-halves"><span>DH</span><span>DL</span></span>
+              </button>
+              <button class="reg" type="button" data-reg="SP" aria-pressed="false"><span class="reg-name">SP</span><span class="reg-note">Stack Pointer</span></button>
+              <button class="reg" type="button" data-reg="BP" aria-pressed="false"><span class="reg-name">BP</span><span class="reg-note">Base Pointer</span></button>
+              <button class="reg" type="button" data-reg="SI" aria-pressed="false"><span class="reg-name">SI</span><span class="reg-note">Source Index</span></button>
+              <button class="reg" type="button" data-reg="DI" aria-pressed="false"><span class="reg-name">DI</span><span class="reg-note">Destination Index</span></button>
+            </div>
+            <div class="detail-panel" id="regDetail" aria-live="polite">
+              <span class="detail-tag">AX · acumulador</span>
+              <h3>Operaciones e interrupciones</h3>
+              <p>Se usa en operaciones aritméticas y como registro principal de las interrupciones. En <code>INT 21h</code>, <code>AH</code> transporta el número de función. Se divide en <code>AH</code> (alto) y <code>AL</code> (bajo).</p>
+            </div>
+          </div>
+          <div class="grid two">
+            <div class="card">
+              <h3>Familias de registros</h3>
+              <ul>
+                <li><strong>Generales:</strong> <code>AX</code>, <code>BX</code>, <code>CX</code>, <code>DX</code>.</li>
+                <li><strong>Índices:</strong> <code>SI</code>, <code>DI</code>, <code>BP</code>, <code>SP</code>.</li>
+                <li><strong>Segmento:</strong> <code>CS</code>, <code>DS</code>, <code>ES</code>, <code>SS</code>.</li>
+                <li><strong>Control:</strong> <code>IP</code> y <code>FLAGS</code>.</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Movimiento y pila</h3>
+              <p><code>MOV destino, origen</code> copia datos. <code>PUSH</code> y <code>POP</code> manipulan la pila LIFO, usada para guardar estado antes de llamar a una subrutina.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>No todos los registros se pueden fraccionar: SP, BP, SI, DI y los de segmento no tienen mitad alta/baja accesible.</p>
+          <p>Relacionar AX con INT 21h: AH lleva la función y AL suele llevar un parámetro o resultado. En el ejemplo de DEBUG, AH=09h imprime una cadena y DS:DX apunta al texto.</p>
+        </aside>
+      </section>
+      <section class="slide" id="modo-real" data-title="Modo real: segmento y desplazamiento" data-section="Procesador" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Procesador</p>
+              <h1>Modo real: segmento y desplazamiento</h1>
+            </div>
+            <span class="slide-tag">16 bits → 20 bits</span>
+          </header>
+          <p class="lead">Los registros son de 16 bits, pero el bus de direcciones necesita 20 bits para acceder a 1 MB. La dirección física se calcula combinando segmento y offset.</p>
+          <div class="callout">
+            <p><strong>El problema:</strong> el procesador solo mueve 16 bits por ciclo y necesita guardar un dato en memoria, pero el chip de memoria exige 20 bits para activarse. <strong>La solución:</strong> el procesador desplaza 4 bits el segmento y suma el offset. Ese desplazamiento es la multiplicación por <code>10h</code>.</p>
+          </div>
+          <div class="grid two">
+            <div class="card">
+              <h3>Calculadora de dirección</h3>
+              <div class="calc">
+                <div class="field">
+                  <label for="segInput">Segmento (hex)</label>
+                  <input id="segInput" type="text" value="0100" inputmode="text" autocomplete="off" spellcheck="false" aria-describedby="calcFormula">
+                </div>
+                <div class="field">
+                  <label for="offInput">Desplazamiento (hex)</label>
+                  <input id="offInput" type="text" value="10D1" inputmode="text" autocomplete="off" spellcheck="false" aria-describedby="calcFormula">
+                </div>
+                <div class="calc-result">
+                  <span>Dirección física</span>
+                  <output id="physOut">020D1h</output>
+                </div>
+                <p class="formula" id="calcFormula"><code>(0100h × 10h) + 10D1h = 020D1h</code></p>
+                <p class="small">Rango: <code>00000h–10FFEFh</code>. La dirección puede superar levemente 1 MB por el solapamiento del último segmento.</p>
+              </div>
+            </div>
+            <div class="stack">
+              <div class="card">
+                <h3>Segmentos</h3>
+                <ul>
+                  <li><strong>CS</strong>: instrucciones.</li>
+                  <li><strong>DS</strong>: variables.</li>
+                  <li><strong>SS</strong>: pila.</li>
+                  <li><strong>ES</strong>: cadenas o memoria de video.</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h3>Sin protección</h3>
+                <p>No hay paginación, multiproceso ni niveles de privilegio. El programa puede controlar todo el procesador.</p>
+              </div>
+              <div class="callout">
+                <p><strong>Fórmula:</strong> dirección = (segmento × 0x10) + offset. Cada segmento abarca 64 KB porque el offset es de 16 bits.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Recalcar por qué se multiplica por 0x10: un segmento se desplaza cuatro bits a la izquierda antes de sumar el offset. Eso permite direccionar 20 bits con registros de 16.</p>
+          <p>El ejemplo 0100:10D1 produce 020D1h. Si el resultado supera 0FFFFFh, el procesador puede acceder hasta 10FFEFh por el solapamiento del segmento.</p>
+        </aside>
+      </section>
       <section class="slide" id="kernel" data-title="Kernel: el mediador" data-section="Kernel" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
@@ -754,30 +764,28 @@
             </div>
             <span class="slide-tag">Núcleo</span>
           </header>
-          <p class="lead">El kernel traduce las operaciones abstractas de las aplicaciones al mundo físico del procesador, la memoria y los dispositivos.</p>
+          <p class="lead">El kernel es el mediador entre las aplicaciones y el hardware. No “hace todo”: ofrece servicios, coordina recursos y delega lo específico en los drivers.</p>
           <div class="layer-flow" aria-label="Capas entre aplicación y hardware">
             <div class="layer">Aplicación</div>
             <div class="layer accent">Kernel</div>
             <div class="layer">Drivers / controladores</div>
             <div class="layer">Hardware</div>
           </div>
-          <div class="grid two">
-            <div class="card">
-              <h3>Procesador</h3>
-              <p>Gestiona las tareas y decide qué código se ejecuta en cada momento.</p>
-            </div>
-            <div class="card">
-              <h3>Memoria</h3>
-              <p>Asigna segmentos a cada programa y evita que uno invada la memoria de otro.</p>
-            </div>
-            <div class="card">
-              <h3>Componentes</h3>
-              <p>Habla con el hardware mediante drivers: audio, red, GPU, almacenamiento. Pueden ser del kernel o propietarios.</p>
-            </div>
-            <div class="card">
-              <h3>Aislamiento y seguridad</h3>
-              <p>Es consecuencia de la mediación. En FreeDOS este aislamiento es mínimo porque todo corre en modo real.</p>
-            </div>
+          <div class="grid three">
+            <div class="card compact"><p><strong>API de servicios:</strong> expone llamadas como <code>INT 21h</code> para abrir archivos, leer teclado o escribir en pantalla.</p></div>
+            <div class="card compact"><p><strong>Archivos y directorios:</strong> interpreta nombres, recorre la FAT y pide los clústeres al driver de disco.</p></div>
+            <div class="card compact"><p><strong>Memoria:</strong> asigna bloques, ajusta los MCB y controla qué programa es dueño de cada segmento.</p></div>
+            <div class="card compact"><p><strong>Carga de programas:</strong> lee el ejecutable, arma el PSP y transfiere el control al código del programa.</p></div>
+            <div class="card compact"><p><strong>Drivers:</strong> traduce pedidos lógicos en operaciones concretas para cada dispositivo.</p></div>
+            <div class="card compact"><p><strong>Buffers y caché:</strong> usa memoria intermedia para no leer o escribir el disco en cada operación.</p></div>
+          </div>
+          <div class="grid three">
+            <div class="card compact"><p><strong>Puente 1 · BIOS:</strong> reutiliza <code>INT 10h</code>, <code>INT 13h</code> e <code>INT 16h</code> para video, disco y teclado.</p></div>
+            <div class="card compact"><p><strong>Puente 2 · puertos:</strong> escribe y lee con <code>IN</code>/<code>OUT</code> cuando el dispositivo se controla por puertos de E/S.</p></div>
+            <div class="card compact"><p><strong>Puente 3 · interrupciones:</strong> recibe IRQ del hardware y registra rutinas en la IVT para atenderlas.</p></div>
+          </div>
+          <div class="callout warn">
+            <p><strong>Límite de FreeDOS:</strong> la mediación existe, pero no hay protección de memoria ni niveles de privilegio. Es un kernel monolítico y todo corre en modo real.</p>
           </div>
         </div>
         <aside class="notes">
@@ -785,7 +793,6 @@
           <p>Matizar: en FreeDOS la mediación existe, pero no hay protección de memoria ni cambio de nivel de privilegio. Es un kernel monolítico simple.</p>
         </aside>
       </section>
-
       <section class="slide" id="tipos-kernel" data-title="Tipos de kernel" data-section="Kernel" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
@@ -836,7 +843,6 @@
           <p>En FreeDOS la discusión es breve porque el sistema es monotarea y no tiene protección de memoria.</p>
         </aside>
       </section>
-
       <section class="slide" id="componentes" data-title="Componentes de FreeDOS" data-section="Kernel" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
@@ -882,76 +888,366 @@
         </div>
         <aside class="notes">
           <p>No memorizar la tabla completa: ubicar las utilidades por área y mencionar las que se usan en las prácticas (DEBUG, MEM, FDISK, FORMAT).</p>
-          <p>FreeCOM se carga al final del arranque según la directiva SHELL de CONFIG.SYS y permanece residente durante la sesión.</p>
+          <p>FreeCOM se carga al final del arranque según la directiva SHELL de FDCONFIG.SYS (el equivalente a CONFIG.SYS) y permanece residente durante la sesión.</p>
         </aside>
       </section>
-
-      <section class="slide" id="modo-real" data-title="Modo real: segmento y desplazamiento" data-section="Arquitectura" aria-hidden="true">
+      <section class="slide" id="disco-bloques" data-title="Disco: sectores, clústeres y slack" data-section="Discos" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
             <div>
-              <p class="kicker">Arquitectura</p>
-              <h1>Modo real: segmento y desplazamiento</h1>
+              <p class="kicker">Discos</p>
+              <h1>Disco: sectores, clústeres y slack</h1>
             </div>
-            <span class="slide-tag">16 bits → 20 bits</span>
+            <span class="slide-tag">Almacenamiento</span>
           </header>
-          <p class="lead">Los registros son de 16 bits, pero el bus de direcciones necesita 20 bits para acceder a 1 MB. La dirección física se calcula combinando segmento y offset.</p>
-          <div class="grid two">
+          <p class="lead">Para el sistema, un disco es un conjunto de bloques numerados. Antes de hablar de archivos hay que distinguir tres unidades: sector, clúster y archivo.</p>
+          <div class="flow-horizontal" aria-label="Del sector al archivo">
+            <div class="flow-box"><strong>Sector</strong><span>Bloque mínimo físico · 512 bytes</span></div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div class="flow-box accent"><strong>Clúster</strong><span>Grupo de sectores contiguos</span></div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div class="flow-box"><strong>Archivo</strong><span>Uno o más clústeres encadenados</span></div>
+          </div>
+          <div class="grid three">
             <div class="card">
-              <h3>Calculadora de dirección</h3>
-              <div class="calc">
-                <div class="field">
-                  <label for="segInput">Segmento (hex)</label>
-                  <input id="segInput" type="text" value="0100" inputmode="text" autocomplete="off" spellcheck="false" aria-describedby="calcFormula">
-                </div>
-                <div class="field">
-                  <label for="offInput">Desplazamiento (hex)</label>
-                  <input id="offInput" type="text" value="10D1" inputmode="text" autocomplete="off" spellcheck="false" aria-describedby="calcFormula">
-                </div>
-                <div class="calc-result">
-                  <span>Dirección física</span>
-                  <output id="physOut">020D1h</output>
-                </div>
-                <p class="formula" id="calcFormula"><code>(0100h × 10h) + 10D1h = 020D1h</code></p>
-                <p class="small">Rango: <code>00000h–10FFEFh</code>. La dirección puede superar levemente 1 MB por el solapamiento del último segmento.</p>
+              <h3>Sector</h3>
+              <p>Es la unidad mínima que el disco entrega. En los discos de la época de DOS suele ser de <strong>512 bytes</strong>.</p>
+            </div>
+            <div class="card">
+              <h3>Clúster</h3>
+              <p>Es un grupo de sectores contiguos. Es lo mínimo que el sistema operativo le reserva a un archivo; también se llama unidad de asignación.</p>
+            </div>
+            <div class="card">
+              <h3>Slack</h3>
+              <p>Es el espacio desperdiciado dentro del último clúster de un archivo. Si el clúster es de 2 KB y el archivo ocupa 0,8 KB, sobran 1,2 KB que no se reutilizan.</p>
+            </div>
+          </div>
+          <div class="callout">
+            <p><strong>Por qué importa:</strong> el tamaño del clúster es una decisión de compromiso. Clústeres grandes hacen crecer el slack; clústeres pequeños multiplican las entradas de la FAT y el trabajo del sistema.</p>
+          </div>
+          <div class="callout warn">
+            <p><strong>Para la práctica:</strong> cuando formateás un disco, el sistema elige un tamaño de clúster según el tamaño del volumen. Ese valor explica cuánto espacio real consume una carpeta con muchos archivos chicos.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Usar la analogía de la caja: el sector es la caja mínima, el clúster es la caja en la que el sistema entrega el pedido y el slack es el aire que sobra dentro de esa caja.</p>
+          <p>No confundir sector con clúster: FAT no direcciona sectores, direcciona clústeres. La relación entre ambos queda guardada en el boot sector del volumen.</p>
+        </aside>
+      </section>
+      <section class="slide" id="filesystem" data-title="Disco, archivos y sistemas de archivos" data-section="Discos" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Discos</p>
+              <h1>Disco, archivos y sistemas de archivos</h1>
+            </div>
+            <span class="slide-tag">Conceptos</span>
+          </header>
+          <p class="lead">El disco es almacenamiento bruto. El sistema de archivos aporta el índice y las reglas necesarias para interpretarlo.</p>
+          <div class="flow-horizontal" aria-label="Relación entre disco, índice y reglas">
+            <div class="flow-box"><strong>Bloques de disco</strong><span>Bytes sin estructura</span></div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div class="flow-box accent"><strong>Índice</strong><span>Ubica cada archivo</span></div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div class="flow-box"><strong>Reglas</strong><span>Nombre, ubicación, seguridad</span></div>
+          </div>
+          <div class="grid three">
+            <div class="card">
+              <h3>Sin filesystem</h3>
+              <p>El sistema no sabe dónde empieza ni dónde termina un archivo. Solo ve sectores y bytes.</p>
+            </div>
+            <div class="card">
+              <h3>Para el procesador</h3>
+              <p>Un archivo es solamente una secuencia de bytes. La estructura la aporta el sistema de archivos.</p>
+            </div>
+            <div class="card">
+              <h3>Tres elementos</h3>
+              <ul>
+                <li><strong>Nombre</strong> de archivo o directorio.</li>
+                <li><strong>Ubicación</strong>: segmento o clúster.</li>
+                <li><strong>Seguridad</strong>: permisos y estado.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout">
+            <p><strong>Idea central:</strong> un file system es un índice más un conjunto de reglas de organización. Sin esas reglas, el hardware no puede reconstruir un archivo.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Separar almacenamiento físico de organización lógica. El disco no “sabe” qué es un archivo; el sistema de archivos construye esa interpretación.</p>
+          <p>Adelantar que FAT usa una tabla como índice y que NTFS/EXT agregan journaling y permisos.</p>
+        </aside>
+      </section>
+      <section class="slide" id="particiones" data-title="Partición, formateo y asignación" data-section="Discos" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Discos</p>
+              <h1>Partición, formateo y asignación</h1>
+            </div>
+            <span class="slide-tag">Tres pasos</span>
+          </header>
+          <p class="lead">Una partición no es una carpeta: es una división lógica del disco. Para que DOS pueda usarla hay que completar tres operaciones distintas.</p>
+          <div class="flow-horizontal" aria-label="Pasos para preparar un disco">
+            <div class="flow-box"><strong>1. Partición</strong><span>Anotar inicio y fin en el MBR</span></div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div class="flow-box accent"><strong>2. Formateo</strong><span>Crear el sistema de archivos</span></div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div class="flow-box"><strong>3. Asignación</strong><span>Darle una letra de unidad</span></div>
+          </div>
+          <div class="grid three">
+            <div class="card step-card">
+              <span class="step-num">1</span>
+              <h3>Partición o volumen</h3>
+              <p>Se escribe en la tabla de particiones que el disco empieza en una sección y termina en otra. El MBR conserva ese índice.</p>
+            </div>
+            <div class="card step-card">
+              <span class="step-num">2</span>
+              <h3>Formateo</h3>
+              <p>Se establece un sistema de archivos: boot sector, tablas FAT vacías, directorio raíz y tamaño de clúster. La “caja negra” pasa a tener estructura.</p>
+            </div>
+            <div class="card step-card">
+              <span class="step-num">3</span>
+              <h3>Asignación</h3>
+              <p>Se le da una letra a ese espacio para diferenciarlo de otros: <code>C:</code>, <code>D:</code>, <code>E:</code>. La letra es una referencia lógica, no el disco físico.</p>
+            </div>
+          </div>
+          <div class="callout warn">
+            <p><strong>Precisión:</strong> formatear no borra físicamente todos los datos. Reescribe las estructuras lógicas que los ubican. Por eso una recuperación todavía es posible hasta que esos sectores se sobrescriben.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Insistir en la separación: partición es geometría lógica, formateo es sistema de archivos y asignación es nomenclatura. Mezclar los tres pasos es el error más común al explicar el almacenamiento.</p>
+          <p>Relacionar con la práctica de QEMU: después de crear la partición hay que reiniciar la máquina virtual y recién entonces ejecutar <code>format c:</code> y <code>format d:</code>.</p>
+        </aside>
+      </section>
+      <section class="slide" id="fat" data-title="FAT: la tabla como índice" data-section="Discos" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Discos</p>
+              <h1>FAT: la tabla como índice</h1>
+            </div>
+            <span class="slide-tag">File Allocation Table</span>
+          </header>
+          <p class="lead">Un archivo no siempre ocupa bloques consecutivos. El directorio indica dónde comenzar y FAT señala qué bloque sigue.</p>
+          <figure class="fat-explanation" aria-labelledby="fat-caption">
+            <div class="fat-map">
+              <section class="fat-directory" aria-labelledby="fat-directory-title">
+                <p class="fat-label" id="fat-directory-title">1. Directorio</p>
+                <p>El directorio guarda el nombre del archivo y dónde empieza.</p>
+                <p class="fat-start"><code>ARCHIVO.DAT</code><span>empieza en el clúster <strong>2</strong></span></p>
+              </section>
+              <section class="fat-table" aria-labelledby="fat-table-title">
+                <p class="fat-label" id="fat-table-title">2. Tabla FAT</p>
+                <p>FAT responde: “si estás aquí, seguí por este clúster”.</p>
+                <dl>
+                  <div><dt>2</dt><dd>seguir por <strong>5</strong></dd></div>
+                  <div><dt>5</dt><dd>seguir por <strong>9</strong></dd></div>
+                  <div><dt>9</dt><dd>seguir por <strong>12</strong></dd></div>
+                  <div><dt>12</dt><dd><strong>fin del archivo</strong></dd></div>
+                </dl>
+              </section>
+            </div>
+            <section class="fat-disk" aria-labelledby="fat-disk-title">
+              <p class="fat-label" id="fat-disk-title">3. Disco</p>
+              <p>Las partes del archivo están mezcladas con otros datos:</p>
+              <div class="fat-disk-grid" aria-label="Bloques del disco; las partes A, B, C y D forman ARCHIVO.DAT">
+                <span>1</span><span class="is-file"><small>2</small>A</span><span>3</span><span>4</span>
+                <span class="is-file"><small>5</small>B</span><span>6</span><span>7</span><span>8</span>
+                <span class="is-file"><small>9</small>C</span><span>10</span><span>11</span><span class="is-file"><small>12</small>D</span>
               </div>
+              <p class="fat-result">FAT permite reconstruir <code>ARCHIVO.DAT</code> como <strong>A → B → C → D</strong>, aunque sus partes no estén juntas.</p>
+            </section>
+            <figcaption id="fat-caption">FAT no guarda el archivo: guarda las indicaciones para encontrar cada parte.</figcaption>
+          </figure>
+          <div class="grid two">
+            <div class="table-wrap">
+              <table>
+                <caption class="sr-only">Comparación de variantes FAT</caption>
+                <thead>
+                  <tr><th>Variante</th><th>Entradas de clúster</th><th>Archivo máx.</th><th>Uso típico</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>FAT12</td><td>12 bits</td><td>Volumen pequeño</td><td>Disquetes de 1,44 MB</td></tr>
+                  <tr><td>FAT16</td><td>16 bits</td><td>2 GB</td><td>Volúmenes pequeños y arranque heredado</td></tr>
+                  <tr><td>FAT32</td><td>28 bits efectivos</td><td>4 GB</td><td>USB, tarjetas SD, discos portátiles</td></tr>
+                  <tr><td>ExFAT</td><td>32 bits</td><td>Muy grande</td><td>Extraíbles de gran capacidad</td></tr>
+                </tbody>
+              </table>
             </div>
             <div class="stack">
-              <div class="card">
-                <h3>Segmentos</h3>
-                <ul>
-                  <li><strong>CS</strong>: instrucciones.</li>
-                  <li><strong>DS</strong>: variables.</li>
-                  <li><strong>SS</strong>: pila.</li>
-                  <li><strong>ES</strong>: cadenas o memoria de video.</li>
-                </ul>
-              </div>
-              <div class="card">
-                <h3>Sin protección</h3>
-                <p>No hay paginación, multiproceso ni niveles de privilegio. El programa puede controlar todo el procesador.</p>
-              </div>
-              <div class="callout">
-                <p><strong>Fórmula:</strong> dirección = (segmento × 0x10) + offset. Cada segmento abarca 64 KB porque el offset es de 16 bits.</p>
+              <div class="callout warn">
+                <p><strong>Precisión:</strong> FAT16/FAT32 no usan “sectores de 16/32 bits”. Lo que cambia es el tamaño de las direcciones de clúster: 16 bits en FAT16 y 28 bits efectivos en FAT32.</p>
               </div>
             </div>
           </div>
         </div>
         <aside class="notes">
-          <p>Recalcar por qué se multiplica por 0x10: un segmento se desplaza cuatro bits a la izquierda antes de sumar el offset. Eso permite direccionar 20 bits con registros de 16.</p>
-          <p>El ejemplo 0100:10D1 produce 020D1h. Si el resultado supera 0FFFFFh, el procesador puede acceder hasta 10FFEFh por el solapamiento del segmento.</p>
+          <p>Mostrar primero las cuatro partes separadas en el disco. Recién después vincular el directorio con el inicio en 2 y la tabla FAT con los saltos 2 → 5 → 9 → 12 → EOF.</p>
+          <p>FAT32 tiene un máximo de 4 GB por archivo y volúmenes de hasta 2 TB en implementaciones habituales; no un máximo de 16 GB. Se usa en unidades de más de 16 GB sin problema.</p>
         </aside>
       </section>
-
-      <section class="slide" id="memoria" data-title="Mapa de memoria de 1 MB" data-section="Arquitectura" aria-hidden="true">
+      <section class="slide" id="ciclo-archivo" data-title="Ciclo de vida de un archivo en FAT" data-section="Discos" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
             <div>
-              <p class="kicker">Arquitectura</p>
+              <p class="kicker">Discos</p>
+              <h1>Ciclo de vida de un archivo en FAT</h1>
+            </div>
+            <span class="slide-tag">Crear · leer · borrar</span>
+          </header>
+          <p class="lead">Un archivo no se guarda de una sola vez: el sistema negocia con la FAT, el directorio y el área de datos. Recorramos el ciclo completo de una operación cotidiana.</p>
+          <div class="grid three">
+            <div class="card">
+              <h3>Crear y escribir</h3>
+              <ol class="steps">
+                <li>Buscar en la FAT los clústeres libres (marcados con 0).</li>
+                <li>Encadenarlos: el 5 apunta al 6, el 6 al 7, hasta el final.</li>
+                <li>Escribir los datos en esos clústeres.</li>
+                <li>Crear la entrada de directorio con nombre, atributos, fecha y tamaño.</li>
+                <li>Actualizar ambas copias de la FAT para mantener el respaldo sincronizado.</li>
+              </ol>
+            </div>
+            <div class="card">
+              <h3>Leer</h3>
+              <ol class="steps">
+                <li>Buscar el nombre en el directorio.</li>
+                <li>Leer el primer clúster indicado en la entrada.</li>
+                <li>Consultar en la FAT cuál es el siguiente clúster.</li>
+                <li>Repetir hasta encontrar la marca de fin de archivo.</li>
+                <li>Entregar los datos al programa que hizo el pedido.</li>
+              </ol>
+            </div>
+            <div class="card">
+              <h3>Borrar</h3>
+              <ol class="steps">
+                <li>Marcar la entrada de directorio como libre.</li>
+                <li>Poner en 0 las entradas de la FAT que formaban la cadena.</li>
+                <li>No sobrescribir necesariamente el contenido del clúster.</li>
+                <li>Dejar esos clústeres disponibles para una escritura futura.</li>
+              </ol>
+            </div>
+          </div>
+          <div class="callout">
+            <p><strong>Idea central:</strong> la FAT es un índice, no el contenido. Crear, leer y borrar son operaciones sobre ese índice y sobre el directorio; el área de datos se toca después.</p>
+          </div>
+          <div class="callout warn">
+            <p><strong>Consecuencia práctica:</strong> en FAT, borrar no garantiza confidencialidad. El contenido puede recuperarse hasta que otro archivo sobrescriba esos clústeres. Para borrar de verdad hay que sobrescribir.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Corregir la idea de que “borrar escribe ceros” en toda la cadena. Lo que se vacía es la entrada de directorio y las entradas FAT; el contenido del clúster queda hasta que se reutiliza.</p>
+          <p>Conectar con la práctica: <code>CHKDSK</code> revisa la consistencia entre FAT y directorios; los “clusters perdidos” son cadenas que ya no pertenecen a ningún archivo.</p>
+        </aside>
+      </section>
+      <section class="slide" id="ntfs-ext" data-title="NTFS y EXT" data-section="Discos" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Discos</p>
+              <h1>NTFS y EXT: sistemas con journaling</h1>
+            </div>
+            <span class="slide-tag">Sistemas modernos</span>
+          </header>
+          <div class="grid two">
+            <div class="card">
+              <h3>NTFS</h3>
+              <ul>
+                <li>Desarrollado por Microsoft a mediados de los 90.</li>
+                <li>Journaling: registra cambios antes de aplicarlos.</li>
+                <li>ACL/ACE: sujeto, permiso y tipo (permite/niega).</li>
+                <li>EFS: cifrado de archivos y directorios.</li>
+                <li>Compresión y soporte para volúmenes y archivos grandes.</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>EXT</h3>
+              <ul>
+                <li>Estándar de Linux y Unix.</li>
+                <li>EXT1/EXT2: rápido y robusto, sin journaling.</li>
+                <li>EXT3: incorpora journaling.</li>
+                <li>EXT4: estándar actual; volúmenes de hasta 1 EiB y archivos de hasta 16 TiB.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <caption class="sr-only">Comparación entre FAT32, NTFS y EXT4</caption>
+              <thead>
+                <tr><th>Característica</th><th>FAT32</th><th>NTFS</th><th>EXT4</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Journaling</td><td>No</td><td>Sí</td><td>Sí</td></tr>
+                <tr><td>Permisos</td><td>No</td><td>ACL</td><td>Permisos POSIX</td></tr>
+                <tr><td>Cifrado</td><td>No</td><td>EFS</td><td>fscrypt (opcional)</td></tr>
+                <tr><td>Archivo máximo</td><td>4 GB</td><td>16 TB práctico</td><td>16 TiB</td></tr>
+                <tr><td>Uso principal</td><td>Extraíbles</td><td>Windows</td><td>Linux</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout">
+            <p><strong>Journaling:</strong> el sistema anota el cambio en un registro antes de ejecutarlo. Si hay un corte, puede recuperar un estado consistente. <strong>EFS</strong> es cifrado; la compresión es una función separada de NTFS.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Corrección respecto del original: EFS no es compresión, es cifrado. NTFS también ofrece compresión, pero es otra función.</p>
+          <p>Evitar dar cifras absolutas sin contexto: los máximos dependen de la implementación y del tamaño de clúster. Para la clase alcanza con distinguir FAT (simple, sin journaling) de NTFS/EXT (journaling y permisos).</p>
+        </aside>
+      </section>
+      <section class="slide" id="comandos-disco" data-title="Comandos de disco y mantenimiento" data-section="Discos" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Discos</p>
+              <h1>Comandos de disco y mantenimiento</h1>
+            </div>
+            <span class="slide-tag">Línea de comandos</span>
+          </header>
+          <p class="lead">Estos comandos aparecen todo el tiempo en las prácticas. Lo importante no es memorizarlos, sino entender qué capa del disco toca cada uno.</p>
+          <div class="table-wrap">
+            <table>
+              <caption class="sr-only">Comandos de disco, formateo y mantenimiento en FreeDOS</caption>
+              <thead>
+                <tr><th>Comando</th><th>Qué hace</th><th>Por qué se usa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>FDISK</code></td><td>Crea, borra y activa particiones; escribe la tabla en el MBR.</td><td>Sin particiones el disco no se puede usar.</td></tr>
+                <tr><td><code>FORMAT C:</code></td><td>Escribe el boot sector, las FAT vacías y el directorio raíz. Define el tamaño de clúster.</td><td>Prepara el sistema de archivos dentro de la partición.</td></tr>
+                <tr><td><code>SYS C:</code></td><td>Graba el sector de arranque y copia el kernel.</td><td>Hace que el disco pueda arrancar por sí mismo.</td></tr>
+                <tr><td><code>CHKDSK C:</code></td><td>Verifica la consistencia entre FAT y directorios.</td><td>Detecta clústeres perdidos y archivos dañados.</td></tr>
+                <tr><td><code>DEFRAG C:</code></td><td>Reordena los clústeres para que cada archivo quede contiguo.</td><td>Un archivo fragmentado se lee más lento.</td></tr>
+                <tr><td><code>DIR</code>, <code>MD</code>, <code>COPY</code>, <code>DEL</code></td><td>Listar, crear carpetas, copiar y borrar.</td><td>Operaciones cotidianas sobre archivos y directorios.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout">
+            <p><strong>Secuencia típica:</strong> <code>FDISK</code> → reiniciar → <code>FORMAT</code> → <code>SYS</code>. Cada comando supone que el anterior ya dejó la estructura necesaria.</p>
+          </div>
+          <div class="callout warn">
+            <p><strong>Ojo con el alcance:</strong> <code>FORMAT</code> prepara un volumen, pero no decide qué partición está activa. Esa decisión se toma en <code>FDISK</code> y se guarda en el MBR.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Ubicar cada comando en su capa: FDISK toca la tabla de particiones, FORMAT toca el sistema de archivos, SYS toca el arranque y CHKDSK/DEFRAG trabajan sobre la consistencia y el orden de los clústeres.</p>
+          <p>En la práctica de QEMU se usan FDISK y FORMAT; SYS aparece en la preparación de DOSBox-X. Conviene comparar ambas secuencias.</p>
+        </aside>
+      </section>
+      <section class="slide" id="memoria" data-title="Mapa de memoria de 1 MB" data-section="Memoria" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Memoria</p>
               <h1>Mapa de memoria de 1 MB</h1>
             </div>
             <span class="slide-tag">640 KB + 384 KB</span>
           </header>
-          <p class="lead">Todo debe funcionar dentro del primer megabyte. Para superar esa limitación se establecieron categorías de memoria.</p>
+          <p class="lead">Todo debe funcionar dentro del primer megabyte. La memoria se organiza en segmentos de 64 KB y párrafos de 16 bytes; sobre esa base se definen las categorías del mapa.</p>
+          <div class="grid three">
+            <div class="card compact"><p><strong>RAM:</strong> memoria de trabajo volátil; guarda programas, datos, pila y buffers mientras la máquina está encendida.</p></div>
+            <div class="card compact"><p><strong>Segmento:</strong> ventana de 64 KB. DOS direcciona la memoria como segmentos, no como una tira continua.</p></div>
+            <div class="card compact"><p><strong>Párrafo:</strong> unidad de 16 bytes; por eso un segmento abarca 64 KB (<code>1000h</code> párrafos).</p></div>
+          </div>
           <div class="memmap">
             <div class="mem-bar" role="group" aria-label="Mapa de memoria de 1 MB">
               <button class="mem-seg conventional" type="button" data-region="conventional" aria-pressed="true">
@@ -976,10 +1272,11 @@
               <p>Es la memoria disponible para DOS y las aplicaciones. La zona que un programa DOS puede usar directamente.</p>
             </div>
           </div>
-          <div class="grid three">
-            <div class="card compact"><p><strong>UMB:</strong> huecos dentro de upper que se usan para drivers y TSR.</p></div>
-            <div class="card compact"><p><strong>XMS:</strong> memoria por encima de 1 MB, accesible mediante <code>HIMEMX</code>.</p></div>
-            <div class="card compact"><p><strong>EMS:</strong> ventana paginada en upper; intercambia páginas de memoria.</p></div>
+          <div class="mem-addresses" aria-label="Direcciones clave del mapa de memoria">
+            <div><code>00000h</code><span>Tabla de interrupciones · 1 KB</span></div>
+            <div><code>00400h</code><span>Área de datos de la BIOS</span></div>
+            <div><code>0A0000h</code><span>Memoria de video · <code>B8000h</code> para texto</span></div>
+            <div><code>100000h</code><span>HMA y memoria extendida (XMS)</span></div>
           </div>
         </div>
         <aside class="notes">
@@ -988,12 +1285,112 @@
           <p>El comando MEM permite ver el mapa en una sesión real.</p>
         </aside>
       </section>
-
-      <section class="slide" id="tsr" data-title="TSR: multitarea simulada" data-section="Arquitectura" aria-hidden="true">
+      <section class="slide" id="mcb-psp" data-title="MCB, PSP y programa" data-section="Memoria" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
             <div>
-              <p class="kicker">Arquitectura</p>
+              <p class="kicker">Memoria</p>
+              <h1>MCB, PSP y programa</h1>
+            </div>
+            <span class="slide-tag">Bloque de memoria</span>
+          </header>
+          <p class="lead">Cada aplicación recibe un bloque con tres piezas consecutivas: una frontera, una cabecera y el código real.</p>
+          <div class="layout-scroll">
+            <div class="layout-blocks" role="group" aria-label="Bloque de memoria de un programa">
+              <button class="layout-block mcb" type="button" data-block="mcb" aria-pressed="true">
+                <strong>MCB</strong>
+                <span>16 bytes</span>
+                <small>Frontera</small>
+              </button>
+              <button class="layout-block psp" type="button" data-block="psp" aria-pressed="false">
+                <strong>PSP</strong>
+                <span>256 bytes</span>
+                <small>Cabecera</small>
+              </button>
+              <button class="layout-block program" type="button" data-block="program" aria-pressed="false">
+                <strong>Programa</strong>
+                <span>lo que necesite</span>
+                <small>Código + datos + pila</small>
+              </button>
+            </div>
+          </div>
+          <div class="detail-panel" id="blockDetail" aria-live="polite">
+            <span class="detail-tag">MCB</span>
+            <h3>Memory Control Block · 16 bytes</h3>
+            <p>Es el “cartel” del kernel: indica dónde empieza el bloque, cuánto mide y dónde termina. También registra el PSP propietario y si es el último bloque (<code>Z</code>) o hay otro después (<code>M</code>).</p>
+          </div>
+          <div class="grid three">
+            <div class="card compact"><p><strong>MCB:</strong> 16 bytes de control.</p></div>
+            <div class="card compact"><p><strong>PSP:</strong> 256 bytes de cabecera del programa.</p></div>
+            <div class="card compact"><p><strong>Programa:</strong> código, variables y pila.</p></div>
+          </div>
+          <div class="callout warn">
+            <p><strong>Precisión:</strong> el PSP mide <strong>256 bytes</strong>, no 256 bits. Los primeros 256 bytes del segmento están reservados para esa cabecera; por eso los programas <code>.COM</code> comienzan en el offset <code>100h</code>.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Usar la analogía del original: MCB es el cartel del kernel, PSP es el DNI del programa y el programa es el cuerpo.</p>
+          <p>Relacionar con DEBUG: al ensamblar en 100h se está dejando libre el PSP. Ese es el motivo técnico del offset inicial.</p>
+        </aside>
+      </section>
+      <section class="slide" id="memoria-asignacion" data-title="Cómo DOS asigna memoria: 48h y 4Ah" data-section="Memoria" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Memoria</p>
+              <h1>Cómo DOS asigna memoria: 48h y 4Ah</h1>
+            </div>
+            <span class="slide-tag">INT 21h</span>
+          </header>
+          <p class="lead">DOS no asigna memoria fina por variable: entrega bloques. El programa nace con toda la torta y, si le sobra, devuelve una parte para que otros puedan usarla.</p>
+          <div class="state-flow" aria-label="Asignación y ajuste de memoria">
+            <div class="state-box">
+              <strong>1. El kernel entrega todo</strong>
+              <span>Al iniciar un programa, le da el bloque libre completo: por ejemplo, 500 KB.</span>
+            </div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div class="state-box active">
+              <strong>2. El programa se mide</strong>
+              <span>Calcula lo que necesita: 40 KB de código y 10 KB de variables.</span>
+            </div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div class="state-box waiting">
+              <strong>3. Llama a 4Ah</strong>
+              <span>Pide al kernel que achique su bloque de 500 KB a 50 KB.</span>
+            </div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div class="state-box">
+              <strong>4. El kernel ajusta</strong>
+              <span>Edita el MCB que ya vimos y marca los 450 KB restantes como libres.</span>
+            </div>
+          </div>
+          <div class="grid two">
+            <div class="card">
+              <h3>48h · reservar memoria</h3>
+              <p>El programa pide un bloque y el kernel busca segmentos libres recorriendo la tabla de MCB. La reserva se registra con dirección y tamaño.</p>
+            </div>
+            <div class="card">
+              <h3>4Ah · cambiar el tamaño</h3>
+              <p>El programa devuelve la parte que no usa. El kernel corta el bloque, actualiza la etiqueta del MCB y libera el resto para otra aplicación.</p>
+            </div>
+          </div>
+          <div class="callout">
+            <p><strong>La analogía de la torta:</strong> el kernel te da toda la torta cuando arrancás; vos, como programa, llamás a <code>4Ah</code> para quedarte con una porción y devolver el resto a la mesa.</p>
+          </div>
+          <div class="callout warn">
+            <p><strong>Quién hace cada paso:</strong> el pedido de ajuste lo hace el programa, no el kernel. Por eso un programa mal escrito puede pedir de más, no devolver lo que sobra o liberar mal su bloque.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Recalcar la diferencia entre 48h y 4Ah: 48h pide memoria; 4Ah cambia el tamaño de un bloque ya asignado. No son dos formas de reservar, son dos momentos del mismo ciclo.</p>
+          <p>Relacionar con el MCB: la operación no mueve bytes, edita la etiqueta administrativa. Los datos del programa quedan donde estaban.</p>
+        </aside>
+      </section>
+      <section class="slide" id="tsr" data-title="TSR: multitarea simulada" data-section="Memoria" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Memoria</p>
               <h1>TSR: multitarea simulada</h1>
             </div>
             <span class="slide-tag">Terminate and Stay Resident</span>
@@ -1046,21 +1443,20 @@
           </div>
         </div>
         <aside class="notes">
-          <p>La IVT funciona como tabla de despacho para los TSR, no como un administrador de tareas. No hay planificación ni quantum.</p>
+          <p>El TSR no crea un proceso nuevo: se cuelga de una interrupción y queda residente. No hay planificación ni quantum.</p>
           <p>La frase del original sobre la IVT como “administrador de tareas” es imprecisa: la IVT solo contiene punteros a rutinas.</p>
         </aside>
       </section>
-
-      <section class="slide" id="ivt" data-title="IVT e INT 21h" data-section="Arquitectura" aria-hidden="true">
+      <section class="slide" id="ivt" data-title="IVT e INT 21h" data-section="Memoria" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
             <div>
-              <p class="kicker">Arquitectura</p>
+              <p class="kicker">Memoria</p>
               <h1>IVT e INT 21h</h1>
             </div>
             <span class="slide-tag">Interrupciones por software</span>
           </header>
-          <p class="lead">La IVT tiene 256 entradas de 4 bytes en los primeros 1 KB. Cada entrada apunta a una rutina; <code>INT 21h</code> es el catálogo de servicios del kernel.</p>
+          <p class="lead">La IVT ya está cargada y el kernel la actualizó. Ahora veamos cómo una llamada a <code>INT 21h</code> termina en una rutina concreta del kernel.</p>
           <div class="int-widget">
             <div class="int-flow" id="intFlow" role="group" aria-label="Flujo de una llamada INT 21h">
               <button class="int-node" type="button" data-int="0" aria-pressed="true"><strong>Programa</strong><span>quiere crear un archivo</span></button>
@@ -1119,112 +1515,101 @@
           <p>En DOS no hay cambio de modo usuario a kernel: todo corre al mismo nivel. Por eso una interrupción de software es suficiente para exponer los servicios.</p>
         </aside>
       </section>
-
-      <section class="slide" id="mcb-psp" data-title="MCB, PSP y programa" data-section="Arquitectura" aria-hidden="true">
+      <section class="slide" id="drivers" data-title="Controladores: traductores entre kernel y hardware" data-section="Controladores" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
             <div>
-              <p class="kicker">Arquitectura</p>
-              <h1>MCB, PSP y programa</h1>
+              <p class="kicker">Controladores</p>
+              <h1>Controladores: traductores entre kernel y hardware</h1>
             </div>
-            <span class="slide-tag">Bloque de memoria</span>
+            <span class="slide-tag">Drivers</span>
           </header>
-          <p class="lead">Cada aplicación recibe un bloque con tres piezas consecutivas: una frontera, una cabecera y el código real.</p>
-          <div class="layout-scroll">
-            <div class="layout-blocks" role="group" aria-label="Bloque de memoria de un programa">
-              <button class="layout-block mcb" type="button" data-block="mcb" aria-pressed="true">
-                <strong>MCB</strong>
-                <span>16 bytes</span>
-                <small>Frontera</small>
-              </button>
-              <button class="layout-block psp" type="button" data-block="psp" aria-pressed="false">
-                <strong>PSP</strong>
-                <span>256 bytes</span>
-                <small>Cabecera</small>
-              </button>
-              <button class="layout-block program" type="button" data-block="program" aria-pressed="false">
-                <strong>Programa</strong>
-                <span>lo que necesite</span>
-                <small>Código + datos + pila</small>
-              </button>
-            </div>
-          </div>
-          <div class="detail-panel" id="blockDetail" aria-live="polite">
-            <span class="detail-tag">MCB</span>
-            <h3>Memory Control Block · 16 bytes</h3>
-            <p>Es el “cartel” del kernel: indica dónde empieza el bloque, cuánto mide y dónde termina. También registra el PSP propietario y si es el último bloque (<code>Z</code>) o hay otro después (<code>M</code>).</p>
-          </div>
-          <div class="grid three">
-            <div class="card compact"><p><strong>MCB:</strong> 16 bytes de control.</p></div>
-            <div class="card compact"><p><strong>PSP:</strong> 256 bytes de cabecera del programa.</p></div>
-            <div class="card compact"><p><strong>Programa:</strong> código, variables y pila.</p></div>
-          </div>
-          <div class="callout warn">
-            <p><strong>Precisión:</strong> el PSP mide <strong>256 bytes</strong>, no 256 bits. Los primeros 256 bytes del segmento están reservados para esa cabecera; por eso los programas <code>.COM</code> comienzan en el offset <code>100h</code>.</p>
-          </div>
-        </div>
-        <aside class="notes">
-          <p>Usar la analogía del original: MCB es el cartel del kernel, PSP es el DNI del programa y el programa es el cuerpo.</p>
-          <p>Relacionar con DEBUG: al ensamblar en 100h se está dejando libre el PSP. Ese es el motivo técnico del offset inicial.</p>
-        </aside>
-      </section>
-
-      <section class="slide" id="registros" data-title="Registros x86 de 16 bits" data-section="Arquitectura" aria-hidden="true">
-        <div class="slide-inner">
-          <header class="slide-head">
-            <div>
-              <p class="kicker">Arquitectura</p>
-              <h1>Registros x86 de 16 bits</h1>
-            </div>
-            <span class="slide-tag">CPU</span>
-          </header>
-          <p class="lead">Los registros son almacenamientos ultra rápidos dentro del procesador. Los de propósito general miden 16 bits y pueden dividirse en dos mitades de 8 bits.</p>
-          <div class="reg-widget">
-            <div class="reg-grid" role="group" aria-label="Registros del procesador">
-              <button class="reg" type="button" data-reg="AX" aria-pressed="true">
-                <span class="reg-name">AX</span>
-                <span class="reg-halves"><span>AH</span><span>AL</span></span>
-              </button>
-              <button class="reg" type="button" data-reg="BX" aria-pressed="false">
-                <span class="reg-name">BX</span>
-                <span class="reg-halves"><span>BH</span><span>BL</span></span>
-              </button>
-              <button class="reg" type="button" data-reg="CX" aria-pressed="false">
-                <span class="reg-name">CX</span>
-                <span class="reg-halves"><span>CH</span><span>CL</span></span>
-              </button>
-              <button class="reg" type="button" data-reg="DX" aria-pressed="false">
-                <span class="reg-name">DX</span>
-                <span class="reg-halves"><span>DH</span><span>DL</span></span>
-              </button>
-              <button class="reg" type="button" data-reg="SP" aria-pressed="false"><span class="reg-name">SP</span><span class="reg-note">Stack Pointer</span></button>
-              <button class="reg" type="button" data-reg="BP" aria-pressed="false"><span class="reg-name">BP</span><span class="reg-note">Base Pointer</span></button>
-              <button class="reg" type="button" data-reg="SI" aria-pressed="false"><span class="reg-name">SI</span><span class="reg-note">Source Index</span></button>
-              <button class="reg" type="button" data-reg="DI" aria-pressed="false"><span class="reg-name">DI</span><span class="reg-note">Destination Index</span></button>
-            </div>
-            <div class="detail-panel" id="regDetail" aria-live="polite">
-              <span class="detail-tag">AX · acumulador</span>
-              <h3>Operaciones e interrupciones</h3>
-              <p>Se usa en operaciones aritméticas y como registro principal de las interrupciones. En <code>INT 21h</code>, <code>AH</code> transporta el número de función. Se divide en <code>AH</code> (alto) y <code>AL</code> (bajo).</p>
-            </div>
-          </div>
+          <p class="lead">El kernel no puede conocer todos los dispositivos del mundo. Delega en un driver: un programa que sabe comunicarse con un dispositivo concreto.</p>
           <div class="grid two">
             <div class="card">
-              <h3>Segmento</h3>
-              <p><code>CS</code> código, <code>DS</code> datos, <code>SS</code> pila, <code>ES</code> extra. Apuntan a bloques de 64 KB.</p>
+              <h3>Controladores de carácter</h3>
+              <p>Manejan flujos de caracteres. Ejemplos: teclado, pantalla, impresora y puerto serie. El sistema lee o escribe una secuencia, no un bloque completo.</p>
             </div>
             <div class="card">
-              <h3>Movimiento y pila</h3>
-              <p><code>MOV destino, origen</code> copia datos. <code>PUSH</code> y <code>POP</code> manipulan la pila LIFO, usada para guardar estado antes de llamar a una subrutina.</p>
+              <h3>Controladores de bloque</h3>
+              <p>Manejan dispositivos de almacenamiento en bloques. El disco entrega sectores numerados y el driver traduce el pedido a esa geometría.</p>
             </div>
+          </div>
+          <div class="card">
+            <h3>Anatomía de un driver</h3>
+            <ul>
+              <li>Una cabecera con un puntero al siguiente driver: todos forman una lista encadenada.</li>
+              <li>Un nombre que lo identifica.</li>
+              <li>Dos puntos de entrada: <strong>estrategia</strong> (recibe el pedido) e <strong>interrupción</strong> (lo ejecuta y avisa cuándo terminó).</li>
+            </ul>
+          </div>
+          <div class="flow-horizontal" aria-label="Cadena de controladores cargados">
+            <div class="flow-box accent"><strong>KERNEL.SYS</strong><span>Punto de partida</span></div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div class="flow-box"><strong>Driver de teclado</strong><span>Carácter</span></div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div class="flow-box"><strong>Driver de disco</strong><span>Bloque</span></div>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <div class="flow-box"><strong>Fin de la lista</strong><span>Sin siguiente</span></div>
+          </div>
+          <div class="callout">
+            <p><strong>Cómo se conecta:</strong> el driver se instala durante el arranque y actualiza la IVT que ya vimos. Cuando llega su interrupción, el procesador salta a la rutina registrada y luego vuelve con <code>IRET</code>.</p>
+          </div>
+          <div class="callout warn">
+            <p><strong>No confundir:</strong> “carácter” describe el modo de transferencia, no el contenido. Un driver de carácter puede transportar texto, comandos o cualquier flujo de bytes.</p>
           </div>
         </div>
         <aside class="notes">
-          <p>No todos los registros se pueden fraccionar: SP, BP, SI, DI y los de segmento no tienen mitad alta/baja accesible.</p>
-          <p>Relacionar AX con INT 21h: AH lleva la función y AL suele llevar un parámetro o resultado. En el ejemplo de DEBUG, AH=09h imprime una cadena y DX apunta al texto.</p>
+          <p>Comparar con el mundo actual: un driver de impresora no “sabe imprimir”, sabe traducir el pedido del sistema al lenguaje del dispositivo.</p>
+          <p>La lista encadenada es una estructura muy de la época: cada driver conoce la dirección del siguiente. Si un driver queda mal instalado, puede romper la cadena y afectar a los demás.</p>
         </aside>
       </section>
-
+      <section class="slide" id="ejemplo-integrado" data-title="Ejemplo integrado: COPY paso a paso" data-section="Integración" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">Integración</p>
+              <h1>Ejemplo integrado: qué pasa cuando copiás un archivo</h1>
+            </div>
+            <span class="slide-tag">De la orden al disco</span>
+          </header>
+          <p class="lead">Reunamos todo: shell, IVT, kernel, FAT, memoria y video en una sola operación cotidiana. Al escribir <code>COPY ORIGEN.TXT DESTINO.TXT</code> ocurre esta película.</p>
+          <figure class="figure wide">
+            <img src="resources/ejemplo-copy.jpg" alt="Diagrama de cuatro franjas que muestra el recorrido de una orden COPY desde COMMAND.COM hasta la confirmación en pantalla" width="1408" height="768" loading="lazy">
+            <figcaption>Las cuatro franjas del recorrido: shell, búsqueda y lectura, escritura y actualización, retorno y confirmación.</figcaption>
+          </figure>
+          <div class="grid two">
+            <div class="card step-card">
+              <span class="step-num">1</span>
+              <h3>Shell y llamada al sistema</h3>
+              <p><code>COMMAND.COM</code> interpreta la orden, prepara los registros de 16 bits con el pedido y dispara <code>INT 21h</code>. El procesador consulta la IVT para encontrar la rutina del kernel y salta hacia allí.</p>
+            </div>
+            <div class="card step-card">
+              <span class="step-num">2</span>
+              <h3>Búsqueda y lectura</h3>
+              <p>El kernel lee los registros, busca <code>ORIGEN.TXT</code> en el directorio y consulta la FAT para saber en qué clústeres está. Pide al disco esos clústeres por puertos <code>IN/OUT</code> o con <code>INT 13h</code>; el disco avisa por IRQ y los datos se copian a un buffer en RAM.</p>
+            </div>
+            <div class="card step-card">
+              <span class="step-num">3</span>
+              <h3>Escritura y actualización</h3>
+              <p>El kernel busca clústeres libres en la FAT, los encadena hasta el fin de archivo y copia el contenido desde RAM al disco. Después actualiza las dos FAT y crea la entrada de directorio de <code>DESTINO.TXT</code> con nombre, fecha, tamaño y primer clúster.</p>
+            </div>
+            <div class="card step-card">
+              <span class="step-num">4</span>
+              <h3>Retorno y confirmación</h3>
+              <p>El kernel deja el resultado en los registros y devuelve el control a <code>COMMAND.COM</code>. El shell escribe el mensaje en la memoria de video (<code>B8000h</code>) con ayuda de <code>INT 10h</code> y el monitor muestra <code>1 file(s) copied</code>.</p>
+            </div>
+          </div>
+          <div class="callout">
+            <p><strong>Todo el temario en una operación:</strong> arranque, shell, kernel, drivers, MCB, segmento:offset, FAT, interrupciones y memoria de video aparecen conectados. Esta diapositiva es el mapa para volver cuando una pieza aislada no cierre.</p>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>Recorrer la imagen de izquierda a derecha, franja por franja. Después volver a las diapositivas de IVT, FAT y MCB para mostrar dónde vive cada pieza del ejemplo.</p>
+          <p>Si surge la duda: el kernel no “copia” directamente del disco al disco. Siempre pasa por un buffer en RAM. Ese detalle es el que conecta almacenamiento con memoria.</p>
+          <p>Aclarar que el diagrama simplifica el polling, la caché y el manejo de errores: lo importante es el orden conceptual.</p>
+        </aside>
+      </section>
       <section class="slide" id="vigencia" data-title="Casos de uso contemporáneos" data-section="Vigencia" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
@@ -1235,7 +1620,7 @@
             <span class="slide-tag">Nichos técnicos</span>
           </header>
           <p class="lead">La continuidad de FreeDOS no se explica por nostalgia, sino por necesidades concretas donde sus limitaciones se convierten en ventajas.</p>
-          <div class="grid two">
+          <div class="grid three">
             <div class="card">
               <h3>Actualización de firmware</h3>
               <p>Herramientas de flashing para placas base, controladoras y almacenamiento. El acceso directo al hardware evita intermediarios y FreeDOS reemplaza a las versiones antiguas de MS-DOS.</p>
@@ -1243,10 +1628,6 @@
             <div class="card">
               <h3>Software heredado</h3>
               <p>CNC, instrumental de laboratorio y sistemas de punto de venta cuya reescritura no es viable. FreeDOS sustituye una licencia de MS-DOS por una alternativa libre.</p>
-            </div>
-            <div class="card">
-              <h3>Sistemas embebidos</h3>
-              <p>Entornos determinísticos, con tiempos de respuesta predecibles y sin la sobrecarga de un planificador multitarea. La ausencia de memoria virtual vuelve el comportamiento auditable.</p>
             </div>
             <div class="card">
               <h3>Preservación y retrocomputación</h3>
@@ -1262,7 +1643,6 @@
           <p>El caso de firmware es el más extendido: muchas utilidades de BIOS/UEFI siguen distribuyéndose como ejecutables DOS.</p>
         </aside>
       </section>
-
       <section class="slide" id="limites" data-title="Límites y valor pedagógico" data-section="Vigencia" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
@@ -1305,7 +1685,6 @@
           <p>El valor pedagógico es el argumento más fuerte para esta materia: el sistema es pequeño, pero internamente coherente.</p>
         </aside>
       </section>
-
       <section class="slide" id="conclusiones" data-title="Conclusiones" data-section="Vigencia" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
@@ -1339,11 +1718,10 @@
           </div>
         </div>
         <aside class="notes">
-          <p>Cerrar con las cuatro ideas y volver al recorrido: historia, archivos, arranque, kernel, arquitectura y prácticas.</p>
+          <p>Cerrar con las cuatro ideas y volver al recorrido: historia, archivos, arranque, kernel, arquitectura, integración y prácticas.</p>
           <p>Evitar frases motivacionales. La conclusión es técnica: el sistema sigue siendo útil en nichos identificables.</p>
         </aside>
       </section>
-
       <section class="slide" id="virtualizacion" data-title="Virtualización y emulación" data-section="Virtualización" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
@@ -1351,7 +1729,7 @@
               <p class="kicker">Virtualización</p>
               <h1>Virtualización y emulación</h1>
             </div>
-            <span class="slide-tag">DOSBox-X</span>
+            <span class="slide-tag">DOSBox-X · QEMU</span>
           </header>
           <p class="lead">Ambas permiten ejecutar otro sistema, pero no hacen lo mismo. La diferencia está en si comparten la arquitectura del host o si la simulan.</p>
           <div class="segmented" role="tablist" aria-label="Comparación entre virtualizador y emulador">
@@ -1410,8 +1788,12 @@
               </div>
               <div class="stack">
                 <div class="card">
-                  <h3>Ejemplo</h3>
-                  <p><strong>DOSBox-X</strong>: emula el entorno necesario para ejecutar DOS y software de 16 bits.</p>
+                  <h3>Ejemplo: DOSBox-X</h3>
+                  <p><strong>DOSBox-X</strong> emula el entorno necesario para ejecutar DOS y software de 16 bits. Es la opción más directa para las prácticas de DEBUG, NASM y OpenGEM.</p>
+                </div>
+                <div class="card">
+                  <h3>QEMU: emular o virtualizar</h3>
+                  <p>QEMU no es solo un emulador. Puede emular hardware completo con <strong>TCG</strong> o acelerar con <strong>KVM</strong> cuando el host y el invitado comparten arquitectura. En la práctica usamos TCG porque emulamos un Pentium con 32 MB de RAM.</p>
                 </div>
                 <div class="card">
                   <h3>Cuándo usarlo</h3>
@@ -1427,15 +1809,218 @@
         </div>
         <aside class="notes">
           <p>La diferencia clave: el virtualizador comparte la ISA del host; el emulador simula otra arquitectura. Si el software es de 16 bits y el host es x86 moderno, igualmente se usa emulación por el entorno de hardware y el arranque.</p>
-          <p>DOSBox-X se usa en las prácticas porque permite montar imágenes, discos y carpetas del host sin instalar FreeDOS en el equipo real.</p>
+          <p>DOSBox-X permite montar imágenes, discos y carpetas del host sin instalar FreeDOS en el equipo real. QEMU permite ver el arranque completo y el particionado de un disco virtual; conviene usar cada uno para lo que muestra mejor.</p>
         </aside>
       </section>
-
-      <section class="slide" id="practica-dosbox" data-title="Práctica: preparar DOSBox-X" data-section="Prácticas" aria-hidden="true">
+      <section class="slide" id="practicas" data-title="Prácticas: elegir herramienta" data-section="Prácticas" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
             <div>
-              <p class="kicker">Práctica 1</p>
+              <p class="kicker">Prácticas</p>
+              <h1>Elegí la herramienta y seguí la guía</h1>
+            </div>
+            <span class="slide-tag">DOSBox-X / QEMU</span>
+          </header>
+          <p class="lead">Las dos herramientas permiten ejecutar FreeDOS, pero resuelven el laboratorio de forma distinta. Elegí una y seguí sus instrucciones; las cuatro prácticas detalladas de DOSBox-X quedan disponibles más abajo.</p>
+          <div class="tool-switch" role="tablist" aria-label="Herramienta de práctica">
+            <button class="tool-btn is-active" id="toolDosbox" type="button" role="tab" aria-selected="true" aria-controls="panelDosbox" data-tool="dosbox">DOSBox-X</button>
+            <button class="tool-btn" id="toolQemu" type="button" role="tab" aria-selected="false" aria-controls="panelQemu" data-tool="qemu">QEMU</button>
+          </div>
+          <div class="tool-panel" id="panelDosbox" role="tabpanel" aria-labelledby="toolDosbox">
+            <div class="grid two">
+              <div class="stack">
+                <div class="card">
+                  <h3>Cuándo elegir DOSBox-X</h3>
+                  <ul>
+                    <li>Querés montar carpetas del host como unidades DOS.</li>
+                    <li>Vas a usar DEBUG, NASM y OpenGEM con la guía paso a paso.</li>
+                    <li>Buscás una configuración rápida, sin instalar un sistema completo.</li>
+                  </ul>
+                </div>
+                <div class="card">
+                  <h3>Secuencia general</h3>
+                  <ol class="steps">
+                    <li>Crear un disco virtual de 50 MB con <code>imgmake</code>.</li>
+                    <li>Montarlo como <code>C:</code> y la carpeta del host como <code>D:</code>.</li>
+                    <li>Copiar FreeDOS, <code>KERNEL.SYS</code> y <code>COMMAND.COM</code>.</li>
+                    <li>Escribir el sector de arranque con <code>sys c:</code>.</li>
+                    <li>Instalar NASM, configurar <code>PATH</code> y verificar con <code>nasm -v</code>.</li>
+                  </ol>
+                </div>
+              </div>
+              <div class="stack">
+                <div class="card">
+                  <h3>Las cuatro prácticas</h3>
+                  <div class="practice-links">
+                    <button class="practice-link" type="button" data-goto="practica-dosbox">
+                      <span class="agenda-num">01</span>
+                      <span><strong>Preparar el entorno</strong><small>Disco virtual, FreeDOS y NASM</small></span>
+                    </button>
+                    <button class="practice-link" type="button" data-goto="practica-debug">
+                      <span class="agenda-num">02</span>
+                      <span><strong>Programa con DEBUG</strong><small>Ensamblar y escribir <code>hola.com</code></small></span>
+                    </button>
+                    <button class="practice-link" type="button" data-goto="practica-nasm">
+                      <span class="agenda-num">03</span>
+                      <span><strong>Ensamblador NASM</strong><small>El mismo programa en formato <code>.COM</code></small></span>
+                    </button>
+                    <button class="practice-link" type="button" data-goto="practica-opengem">
+                      <span class="agenda-num">04</span>
+                      <span><strong>Interfaz OpenGEM</strong><small>Una GUI que corre sobre DOS</small></span>
+                    </button>
+                  </div>
+                </div>
+                <div class="callout">
+                  <p><strong>Consejo de estudio:</strong> hacé primero la práctica 1 y volvé a las diapositivas de arranque, FAT y MCB cada vez que un comando no cierre. Las prácticas están pensadas para leer el sistema, no solo para copiar comandos.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tool-panel" id="panelQemu" role="tabpanel" aria-labelledby="toolQemu" hidden>
+            <div class="callout">
+              <p><strong>Qué vamos a hacer:</strong> instalar QEMU, crear un disco virtual, instalar FreeDOS desde la LiveCD, preparar las particiones y sumar aplicaciones desde el BonusCD. Cada comando lleva un comentario con el “qué” y el “por qué”.</p>
+            </div>
+            <div class="lab-steps">
+              <article class="lab-step">
+                <div class="lab-step-head">
+                  <span class="lab-num">01</span>
+                  <h3>Instalar QEMU y las utilidades de disco</h3>
+                </div>
+                <pre class="code"><code>sudo apt update
+sudo apt install --no-install-recommends qemu-system-x86 qemu-utils</code></pre>
+                <p><strong>Por qué:</strong> <code>qemu-system-x86</code> provee el emulador de la máquina y <code>qemu-utils</code> aporta <code>qemu-img</code>, la herramienta para crear y administrar discos virtuales. <code>--no-install-recommends</code> evita paquetes opcionales que no necesitamos para el laboratorio.</p>
+              </article>
+              <article class="lab-step">
+                <div class="lab-step-head">
+                  <span class="lab-num">02</span>
+                  <h3>Crear el disco virtual</h3>
+                </div>
+                <pre class="code"><code># -f: formato de disco
+# 200M: tamaño máximo del disco
+# qcow2 crece dinámicamente: empieza chico y ocupa más a medida que se escribe
+qemu-img create -f qcow2 disk0.qcow2 200M</code></pre>
+                <p><strong>Qué devuelve:</strong> <code>fmt</code> confirma el formato; <code>cluster_size</code> es el bloque de almacenamiento (64 KB por defecto); <code>size</code> es el tamaño total; <code>lazy_refcounts</code> y <code>refcounts_bits</code> son metadatos internos que conviene dejar por defecto. <code>compression_type</code> indica si el contenido está comprimido.</p>
+              </article>
+              <article class="lab-step">
+                <div class="lab-step-head">
+                  <span class="lab-num">03</span>
+                  <h3>Descargar y descomprimir las imágenes</h3>
+                </div>
+                <pre class="code"><code># Traer los ZIP desde Descargas a la carpeta de trabajo
+mv ~/Descargas/FD14-LiveCD.zip .
+mv ~/Descargas/FD14-BonusCD.zip .
+
+# Separar cada imagen en su propia carpeta
+unzip FD14-LiveCD.zip -d live
+unzip FD14-BonusCD.zip -d bonus
+
+# Limpiar los ZIP una vez extraídos
+rm FD14-LiveCD.zip FD14-BonusCD.zip</code></pre>
+                <p><strong>Por qué:</strong> <code>mv</code> mueve los archivos; <code>unzip -d</code> extrae en un directorio distinto para no mezclar la LiveCD con el BonusCD; <code>rm</code> elimina los comprimidos originales. Si la ruta tiene espacios, usá comillas: <code>mv "$HOME/Descargas/FD14-LiveCD.zip" .</code></p>
+              </article>
+              <article class="lab-step">
+                <div class="lab-step-head">
+                  <span class="lab-num">04</span>
+                  <h3>Arrancar el instalador de FreeDOS</h3>
+                </div>
+                <pre class="code"><code># -m 32: 32 MB de RAM para la máquina virtual
+# -cpu pentium: emula un procesador Pentium compatible
+# -accel tcg,thread=multi: acelera la emulación por software con varios hilos
+# -hda disk0.qcow2: disco principal donde se instalará FreeDOS
+# -cdrom: imagen óptica de instalación
+# -boot d: arranca desde el CD-ROM
+qemu-system-i386 -m 32 -cpu pentium -accel tcg,thread=multi \
+  -hda disk0.qcow2 -cdrom live/FD14-LiveCD.iso -boot d</code></pre>
+                <figure class="figure">
+                  <img src="resources/instalador_freedos.webp" alt="Pantalla del instalador de FreeDOS dentro de QEMU" width="730" height="461" loading="lazy">
+                  <figcaption>El instalador de FreeDOS arranca desde la LiveCD montada como CD-ROM.</figcaption>
+                </figure>
+                <p><strong>Antes de ejecutar:</strong> verificá el nombre exacto del archivo <code>.iso</code> dentro de <code>live/</code>. Si se llama distinto, ajustá la ruta de <code>-cdrom</code>.</p>
+              </article>
+              <article class="lab-step">
+                <div class="lab-step-head">
+                  <span class="lab-num">05</span>
+                  <h3>Particionar, reiniciar y formatear</h3>
+                </div>
+                <pre class="code"><code># Dentro del instalador, crear:
+#   1. una partición primaria para el sistema operativo
+#   2. una partición extendida que ocupe el resto del disco
+#   3. una unidad lógica dentro de la extendida
+fdisk
+
+# Reiniciar desde el menú Machine > Reset y luego formatear:
+format c:
+format d:</code></pre>
+                <p><strong>Por qué:</strong> la partición primaria alojará el sistema operativo. La extendida funciona como un contenedor que permite crear unidades lógicas; es una forma de ordenar el resto del espacio y de mantener un índice en la tabla de particiones. El formateo escribe el boot sector, las FAT y el directorio raíz: el contenedor deja de ser una caja de bits y pasa a tener un sistema de archivos.</p>
+              </article>
+              <article class="lab-step">
+                <div class="lab-step-head">
+                  <span class="lab-num">06</span>
+                  <h3>Arrancar desde el disco instalado</h3>
+                </div>
+                <pre class="code"><code># -boot c: ahora arranca desde el disco, no desde el CD
+qemu-system-i386 -m 32 -cpu pentium -accel tcg,thread=multi \
+  -hda disk0.qcow2 -boot c</code></pre>
+                <p><strong>Qué vas a ver:</strong> el menú de <code>FDCONFIG.SYS</code>, donde se elige la administración de memoria y los controladores de bajo nivel. Las familias más comunes son <strong>JEMM386</strong> (clásica, memoria superior y EMS desactivada por defecto) y <strong>JEMMEX</strong> (dos en uno: memoria extendida, memoria superior y compatibilidad con juegos viejos).</p>
+                <button class="btn" type="button" data-goto="memoria-arranque">Repasar FDCONFIG.SYS</button>
+              </article>
+              <article class="lab-step">
+                <div class="lab-step-head">
+                  <span class="lab-num">07</span>
+                  <h3>Instalar aplicaciones desde el BonusCD</h3>
+                </div>
+                <pre class="code"><code># Levantar la máquina con el BonusCD además del disco ya instalado
+qemu-system-i386 -m 32 -cpu pentium -accel tcg,thread=multi \
+  -hda disk0.qcow2 -cdrom bonus/FD14-BonusCD.iso -boot c</code></pre>
+                <p><strong>Por qué:</strong> el disco ya tiene FreeDOS; el CD aporta los paquetes. Dentro de FreeDOS, la letra de la unidad óptica suele ser <code>E:</code>; verificá con <code>dir e:\</code>.</p>
+                <pre class="code"><code># xcopy copia archivos y estructura de directorios
+# /i asume que el destino es un directorio
+# /y evita la pregunta de confirmación
+xcopy "e:\packages\gui\opengem.zip" "c:\applications\" /i /y
+xcopy "e:\packages\edit\pico.zip" "c:\applications\" /i /y
+xcopy "e:\packages\devel\nasm.zip" "c:\applications\" /i /y</code></pre>
+                <pre class="code"><code># Descomprimir cada paquete en su propia carpeta
+cd c:\applications
+unzip opengem.zip -d gem
+unzip pico.zip -d bin
+unzip nasm.zip -d nasm</code></pre>
+                <p><strong>Qué anotar:</strong> mientras descomprimís, registrá el <code>.exe</code> o <code>.bat</code> que lanza cada programa y su ubicación. Las rutas típicas quedan así:</p>
+                <pre class="code"><code>c:\applications\nasm\devel\nasm\nasm.exe
+c:\applications\gem\gui\opengem\gem.bat
+c:\applications\bin\pico.exe</code></pre>
+                <pre class="code"><code># Crear lanzadores en c:\freedos\bin para poder llamarlos desde cualquier ruta
+echo @c:\applications\nasm\devel\nasm\nasm.exe %1 %2 %3 %4 %5* > c:\freedos\bin\nasm.bat
+echo @c:\applications\bin\pico.exe %%* > c:\freedos\bin\pico.bat</code></pre>
+                <p><strong>OpenGEM necesita una configuración especial:</strong> se mapea una unidad temporal con <code>swsubst</code>, se entra en ella, se lanza <code>gem.bat</code> y al salir se restaura la unidad original.</p>
+                <pre class="code"><code>copy con c:\freedos\bin\gem.bat
+
+@echo off
+swsubst o: c:\applications\gem\gui\opengem
+o:
+cd \
+call gem.bat
+c:
+cd \
+swsubst /d o:</code></pre>
+                <p class="small">Para cerrar <code>copy con</code>, presioná <kbd>Ctrl</kbd>+<kbd>Z</kbd> y luego <kbd>Enter</kbd>.</p>
+                <p><strong>Por qué:</strong> los lanzadores de <code>c:\freedos\bin</code> quedan en el <code>PATH</code> y permiten ejecutar los programas desde cualquier carpeta. Para GEM, <code>swsubst</code> crea una letra de unidad temporal que apunta a la carpeta de la interfaz gráfica, de modo que sus rutas internas funcionen sin mover archivos.</p>
+              </article>
+            </div>
+            <div class="callout">
+              <p><strong>QEMU frente a DOSBox-X:</strong> QEMU instala un sistema completo y permite ver el arranque, las particiones y el disco real emulado. DOSBox-X es más directo para las prácticas de herramientas. Usar las dos cosas da una comprensión más completa: QEMU para el sistema, DOSBox-X para el software.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          <p>La pestaña QEMU está pensada para acompañar la instalación en vivo. No dictar todos los comandos: mostrar la lógica de cada etapa y dejar que los alumnos resuelvan las rutas.</p>
+          <p>Si el grupo ya tiene DOSBox-X funcionando, usar QEMU como demostración del arranque completo y reservar la práctica individual para DOSBox-X.</p>
+        </aside>
+      </section>
+      <section class="slide" id="practica-dosbox" data-title="DOSBox-X: preparar el entorno" data-section="Prácticas" aria-hidden="true">
+        <div class="slide-inner">
+          <header class="slide-head">
+            <div>
+              <p class="kicker">DOSBox-X · Práctica 1</p>
               <h1>Preparar el entorno DOSBox-X</h1>
             </div>
             <span class="slide-tag">Disco virtual</span>
@@ -1482,12 +2067,11 @@ nasm -v</code></pre>
           <p>Si <code>sys c:</code> falla, revisar que <code>KERNEL.SYS</code> y <code>COMMAND.COM</code> estén en la raíz de <code>C:</code> y que la imagen esté montada como disco duro.</p>
         </aside>
       </section>
-
-      <section class="slide" id="practica-debug" data-title="Práctica: programa con DEBUG" data-section="Prácticas" aria-hidden="true">
+      <section class="slide" id="practica-debug" data-title="DOSBox-X: programa con DEBUG" data-section="Prácticas" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
             <div>
-              <p class="kicker">Práctica 2</p>
+              <p class="kicker">DOSBox-X · Práctica 2</p>
               <h1>Programa con DEBUG</h1>
             </div>
             <span class="slide-tag">hola.com</span>
@@ -1554,12 +2138,11 @@ xxxx:0109
           <p><code>int 20</code> es la salida histórica. En código nuevo conviene <code>INT 21h / AH=4Ch</code>, pero DEBUG acepta la forma corta.</p>
         </aside>
       </section>
-
-      <section class="slide" id="practica-nasm" data-title="Práctica: ensamblador NASM" data-section="Prácticas" aria-hidden="true">
+      <section class="slide" id="practica-nasm" data-title="DOSBox-X: ensamblador NASM" data-section="Prácticas" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
             <div>
-              <p class="kicker">Práctica 3</p>
+              <p class="kicker">DOSBox-X · Práctica 3</p>
               <h1>Ensamblador NASM</h1>
             </div>
             <span class="slide-tag">.COM</span>
@@ -1606,12 +2189,11 @@ hola.com</code></pre>
           <p>La directiva <code>section .data</code> funciona con el formato binario; el mensaje queda en el mismo segmento y <code>mov dx, msg</code> resuelve la dirección.</p>
         </aside>
       </section>
-
-      <section class="slide" id="practica-opengem" data-title="Práctica: OpenGEM" data-section="Prácticas" aria-hidden="true">
+      <section class="slide" id="practica-opengem" data-title="DOSBox-X: OpenGEM" data-section="Prácticas" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
             <div>
-              <p class="kicker">Práctica 4</p>
+              <p class="kicker">DOSBox-X · Práctica 4</p>
               <h1>Interfaz gráfica con OpenGEM</h1>
             </div>
             <span class="slide-tag">GUI sobre DOS</span>
@@ -1644,7 +2226,6 @@ gem</code></pre>
           <p>Esta práctica sirve para mostrar que FreeDOS puede soportar interfaces gráficas, aunque el sistema base siga siendo de línea de comandos.</p>
         </aside>
       </section>
-
       <section class="slide" id="cierre" data-title="Cierre" data-section="Cierre" aria-hidden="true">
         <div class="slide-inner">
           <header class="slide-head">
@@ -1665,7 +2246,7 @@ gem</code></pre>
             </div>
             <div class="card">
               <h3>Arranque</h3>
-              <p>BIOS/UEFI → MBR/VBR → KERNEL.SYS → CONFIG.SYS → COMMAND.COM/AUTOEXEC.BAT → <code>C:\&gt;</code>.</p>
+              <p>BIOS/UEFI → MBR/VBR → KERNEL.SYS → FDCONFIG.SYS → COMMAND.COM/FDAUTO.BAT → <code>C:\&gt;</code>.</p>
             </div>
             <div class="card">
               <h3>Interrupciones</h3>
@@ -1673,7 +2254,7 @@ gem</code></pre>
             </div>
           </div>
           <div class="callout">
-            <p><strong>Para practicar:</strong> repetir el recorrido en DOSBox-X, verificar el mapa con <code>MEM</code>, armar <code>hola.com</code> con DEBUG y compilar la versión NASM.</p>
+            <p><strong>Para practicar:</strong> elegir DOSBox-X o QEMU en el hub de prácticas. Con DOSBox-X, verificar el mapa con <code>MEM</code>, armar <code>hola.com</code> con DEBUG y compilar la versión NASM. Con QEMU, recorrer el arranque completo y comparar el particionado con <code>FDISK</code>.</p>
           </div>
           <p class="closing-line">Consultas</p>
         </div>
@@ -1689,7 +2270,7 @@ gem</code></pre>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
         <span>Anterior</span>
       </button>
-      <div class="counter" aria-live="polite"><span id="currentNum">1</span> / <span id="totalNum">31</span></div>
+      <div class="counter" aria-live="polite"><span id="currentNum">1</span> / <span id="totalNum">41</span></div>
       <button class="btn nav-btn" id="nextBtn" type="button" aria-label="Diapositiva siguiente">
         <span>Siguiente</span>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
